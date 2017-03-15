@@ -1,0 +1,37 @@
+\section{Problem Formulations}
+\label{sec:problem}
+
+\subsection{Single MapReduce Query}
+
+\subsubsection*{Minimize WAN usage}
+
+When minimizing WAN usage for a MapReduce data shuffle we have the following optimization problem:
+\begin{subequations}
+	\begin{align}
+		\min_{r} \quad & \sum_{l_1}\sum_{l_2\neq l_1}D_{l_1}r_{l_2} \\
+		\text{s.t.} \quad & \sum_{l_2}r_{l_2} = 1 \\
+		& r_{l_2} \geq 0 \quad \forall l_2
+	\end{align}
+\end{subequations}
+
+\subsubsection*{Feasibility to meet deadline}
+
+We want to find a feasible $r$ so that the data shuffle finishes at or before $t$:
+\begin{subequations}
+	\begin{align}
+		\text{find } r \text{ s.t.} \quad & \dfrac{D_{l_1}r_{l_2}}{B_{l_1}^{l_2}} \leq t - s \quad \forall (l_1,l_2):l_2\neq l_1 \\
+		& \sum_{l_2}r_{l_2} = 1 \\
+		& r_{l_2} \geq 0 \quad \forall l_2
+	\end{align}
+\end{subequations}
+
+\subsubsection*{Minimize WAN usage given a shuffle deadline}
+When minimizing WAN usage for a MapReduce data shuffle for a given deadline $t$ we have the following optimization problem:
+\begin{subequations}
+	\begin{align}
+		\min_{r} \quad & \sum_{l_1}\sum_{l_2\neq l_1}D_{l_1}r_{l_2} \\
+		\text{ s.t.} \quad & \dfrac{D_{l_1}r_{l_2}}{B_{l_1}^{l_2}} \leq t - s \quad \forall (l_1,l_2):l_2\neq l_1 \\
+		& \sum_{l_2}r_{l_2} = 1 \\
+		& r_{l_2} \geq 0 \quad \forall l_2
+	\end{align}
+\end{subequations}

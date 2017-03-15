@@ -1,0 +1,20 @@
+\section{Model}
+\label{sec:model}
+
+Let $\mathcal{L}$ be the set of sites that holds data and runs tasks.
+For each inter-site WAN link, let $B_{l_1}^{l_2}$ be the bandwidth from site $l_1\in\mathcal{L}$ to site $l_2\in\mathcal{L}$.
+We assume that the bandwidths are stable within the time frame of doing real-time data analytics.
+
+\subsection{Single MapReduce Query}
+We perform the map tasks at the sites that contain the associated data and denote $D_{l_1}$ as the output data from all of the map tasks at site $l_1$.
+The fraction of reduce tasks assigned to site $l_2$ is denoted as $r_{l_2}$ which is also the fraction of all other sites' data that must be transfered through the WAN to $l_2$.
+This means that the total WAN usage is for a given task distribution $r$ is:
+\begin{align}
+	\sum_{l_1}\sum_{l_2\neq l_1}D_{l_1}r_{l_2}
+\end{align}
+
+If we are given a start time $s$ after the map steps are all completed and a data shuffle deadline $t$ for the reduce tasks, then the completion time is bounded as such:
+\begin{align}
+	s + \max_{(l_1,l_2):l_2\neq l_1} \left\{\dfrac{D_{l_1}r_{l_2}}{B_{l_1}^{l_2}}\right\} \leq t
+\end{align}
+which is caused by the heterogeneous WAN bandwidth and has a bottlenecking link(s).
