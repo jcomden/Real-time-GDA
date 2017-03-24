@@ -1,0 +1,122 @@
+\section{Optima}
+\label{sec:optima}
+
+\subsection{Single MapReduce Query with a deadline}
+
+Since Problem \eqref{eq:opt_1Q_MR_WAN_deadline} is a convex optimization problem (linear program), we look at the Karush-Kuhn-Tucker (KKT) conditions for optimality using the following dual variables $(\mu_{ij},\theta,\lambda_j):\forall (i,j),i\neq j$:
+\begin{subequations}\label{eq:opt_1Q_MR_WAN_deadline_kkt}
+	\begin{align}
+		-D_j+\sum_{i\neq j}\dfrac{D_i}{B_i^j}\mu_{ij} + \theta - \lambda_j = 0 & \quad \forall j \label{eq:opt_1Q_MR_WAN_deadline_kkt_stat}\\
+		\mu_{ij}\left(\dfrac{D_{i}}{B_{i}^{j}}r_{j} - (t - s)\right) = 0 & \quad \forall (i,j):i\neq j \label{eq:opt_1Q_MR_WAN_deadline_kkt_cs1}\\
+		r_j\lambda_j = 0 & \quad \forall j \label{eq:opt_1Q_MR_WAN_deadline_kkt_cs2}\\
+		\mu_{ij} \geq 0 & \quad \forall (i,j):i\neq j \label{eq:opt_1Q_MR_WAN_deadline_kkt_dual1}\\
+		\lambda_j \geq 0  & \quad \forall j \label{eq:opt_1Q_MR_WAN_deadline_kkt_dual2}\\
+		\dfrac{D_{i}}{B_{i}^{j}}r_{j} - (t - s) \leq 0  & \quad \forall (i,j):i\neq j \label{eq:opt_1Q_MR_WAN_deadline_kkt_prim1}\\
+		\sum_{j}r_{j} - 1 = 0 & \label{eq:opt_1Q_MR_WAN_deadline_kkt_prim2}\\
+		r_{j} \geq 0 & \quad \forall j \label{eq:opt_1Q_MR_WAN_deadline_kkt_prim3}
+	\end{align}
+\end{subequations}
+where \eqref{eq:opt_1Q_MR_WAN_deadline_kkt_stat} are the first stationary conditions, \eqref{eq:opt_1Q_MR_WAN_deadline_kkt_cs1} \eqref{eq:opt_1Q_MR_WAN_deadline_kkt_cs2} are the complimentary slackness conditions, \eqref{eq:opt_1Q_MR_WAN_deadline_kkt_dual1} \eqref{eq:opt_1Q_MR_WAN_deadline_kkt_dual2} are the dual feasibility conditions, and \eqref{eq:opt_1Q_MR_WAN_deadline_kkt_prim1} \eqref{eq:opt_1Q_MR_WAN_deadline_kkt_prim2} \eqref{eq:opt_1Q_MR_WAN_deadline_kkt_prim3} are the primal feasibility conditions.
+
+Notice that for every site $j$, \eqref{eq:opt_1Q_MR_WAN_deadline_kkt_prim1} implies that there could be bottlenecking link if $\max_{i\neq j}\left\{D_i/B_i^j\right\}>t-s$.
+There would not be a bottlenecking link only if making $r_j=1$ meets the deadline.
+Let us denote
+\begin{align}
+	U_j := \max_{i\neq j}\left\{D_i/B_i^j\right\}
+\end{align}
+as the maximum upload time for site $j$ if $r_j=1$, and denote
+\begin{align}
+	b_j: = \arg\max_{i\neq j}\left\{D_i/B_i^j\right\}
+\end{align}
+as the set of bottlenecking data sources.
+If for any $i\notin b_j$, then \eqref{eq:opt_1Q_MR_WAN_deadline_kkt_prim1} is satisfied if it satisfied for $b_j$ and also $D_i/B_i^j<t-s$.
+This fact and \eqref{eq:opt_1Q_MR_WAN_deadline_kkt_cs1} implies that $\mu_{ij}=0$ if $i\notin b_j$.
+Now the KKT conditions \eqref{eq:opt_1Q_MR_WAN_deadline_kkt} have redundant conditions that can be eliminated to:
+\begin{subequations}\label{eq:opt_1Q_MR_WAN_deadline_kkt2}
+	\begin{align}
+		-D_j+U_j\sum_{i\in b_j}\mu_{ij} + \theta - \lambda_j = 0 & \quad \forall j \label{eq:opt_1Q_MR_WAN_deadline_kkt2_stat}\\
+		\mu_{ij}\left(U_jr_{j} - (t - s)\right) = 0 & \quad \forall (i,j):i\in b_j \label{eq:opt_1Q_MR_WAN_deadline_kkt2_cs1}\\
+		r_j\lambda_j = 0 & \quad \forall j \label{eq:opt_1Q_MR_WAN_deadline_kkt2_cs2}\\
+		\mu_{ij} \geq 0 & \quad \forall (i,j):i\in b_j \label{eq:opt_1Q_MR_WAN_deadline_kkt2_dual1}\\
+		\lambda_j \geq 0  & \quad \forall j \label{eq:opt_1Q_MR_WAN_deadline_kkt2_dual2}\\
+		U_jr_{j} - (t - s) \leq 0  & \quad \forall (i,j):i\in b_j \label{eq:opt_1Q_MR_WAN_deadline_kkt2_prim1}\\
+		\sum_{j}r_{j} - 1 = 0 & \label{eq:opt_1Q_MR_WAN_deadline_kkt2_prim2}\\
+		r_{j} \geq 0 & \quad \forall j \label{eq:opt_1Q_MR_WAN_deadline_kkt2_prim3}
+	\end{align}
+\end{subequations}
+
+We have three cases for each $r_j$:
+\begin{enumerate}
+	\item $r_j=(t-s)/U_j$.
+	Since $t-s>0$ and $U_j>0$, then $r_j>0$.
+	Then \eqref{eq:opt_1Q_MR_WAN_deadline_kkt2_cs2} results in $\lambda_j=0$.
+	In this case \eqref{eq:opt_1Q_MR_WAN_deadline_kkt2_stat} turns into:
+	\begin{align}
+		\theta = D_j-U_j\sum_{i\in b_j}\mu_{ij} 
+	\end{align}
+	Since $\sum_{i\in b_j}\mu_{ij}\geq 0$ from \eqref{eq:opt_1Q_MR_WAN_deadline_kkt2_dual1}, then this means that $\theta \leq D_j$.
+	\item $0<r_j<(t-s)/U_j$.
+	Then \eqref{eq:opt_1Q_MR_WAN_deadline_kkt2_cs2} results in $\lambda_j=0$ and \eqref{eq:opt_1Q_MR_WAN_deadline_kkt2_cs1} results in $\mu_{ij} = 0:\forall i\in b_j$.
+	In this case \eqref{eq:opt_1Q_MR_WAN_deadline_kkt2_stat} turns into:
+	\begin{align}
+		\theta = D_j
+	\end{align}
+	\item $r_j=0$.
+	Then \eqref{eq:opt_1Q_MR_WAN_deadline_kkt2_cs1} results in $\mu_{ij} = 0:\forall i\in b_j$.
+	In this case \eqref{eq:opt_1Q_MR_WAN_deadline_kkt2_stat} turns into:
+	\begin{align}
+		\theta = D_j+\lambda_j
+	\end{align}
+	Since \eqref{eq:opt_1Q_MR_WAN_deadline_kkt2_dual2}, then $\theta \geq D_j$.
+\end{enumerate}
+
+Since $\theta$ can only be a single value, the above cases give a natural ordering. For a particular $\theta$: if $D_j>\theta$, then Case 1 applies; if $D_j<\theta$ then Case 3 applies; if $D_j=\theta$ then Cases 1,2, or 3 could apply.
+This also means that we can restrict $\theta$ to the set $\left\{D_j:\forall j\right\}$ without restricting the solution space of the task placements $r_j:\forall j$.
+
+Also, if all sites are in Case 1 and we observe that from \eqref{eq:opt_1Q_MR_WAN_deadline_kkt2_prim2} $\sum_{j}\frac{1}{U_j}<\frac{1}{t-s}$, then the deadline $t$ is too soon and the problem is infeasible.
+Let us denote the lower bound on $t$ as:
+\begin{align}
+	\underline{t}:=s + \dfrac{1}{\sum_{j}\frac{1}{U_j}}
+\end{align}
+On the other hand, let $l:=\arg\max_j\{D_j\}$ and if $U_l<t-s$, then $r_l=1$ and $r_j=0:\forall j\neq l$.
+Let us denote the upper bound on $t$ as:
+\begin{align}
+	\overline{t}:= s + U_l
+\end{align}
+
+If $t\geq \overline{t}$, then $r_l=1$, $r_j=0:\forall j\neq l$, and the WAN usage is $\sum_{i}D_i-D_l$.
+
+If $t= \underline{t}$, then $r_j = (\underline{t}-s)/U_j:\forall j$ and the WAN usage is $\sum_{i}D_i-(\underline{t}-s)\sum_{j}(D_j/U_j)$.
+
+Note that if either the maximum deadline range
+\begin{align}
+	\overline{t}-\underline{t} = U_l - \dfrac{1}{\sum_{j}\frac{1}{U_j}} \\
+\end{align}
+or the maximum WAN savings
+\begin{align}
+	D_l-\dfrac{1}{\sum_{j}\frac{1}{U_j}}\sum_{j}\frac{D_j}{U_j}
+\end{align}
+has significant cost, then developing an optimization algorithm is worthwhile.
+
+We have the following algorithm:
+\begin{enumerate}
+	\item \textbf{Initialize:}
+	\begin{itemize}
+		\item Order $D_j$ in descending order and relabel the indexes for this ordering.
+		\item Set $y := 1$, $k := 1$, and $r_j := 0:\forall j$
+		\item For each site $j$, set:\\
+		$U_j := \max_{i\neq j}\left\{D_i/B_i^j\right\}$\\
+		$b_j := \arg\max_{i\neq j}\left\{D_i/B_i^j\right\}$.
+	\end{itemize}
+	\item \textbf{Test for feasibility:}
+	\begin{itemize}
+		\item If $t\leq s+\dfrac{1}{\sum_{j}\frac{1}{U_j}}$, then stop because the problem is infeasible.
+	\end{itemize}
+	\item \textbf{Process:}
+	\begin{itemize}
+		\item Replace $r_k := \min\{y,(t-s)/U_k\}$.
+		\item Update $y:= y - r_k$ and $k:=k+1$.
+		\item If $y \leq 0$ or $k>|\mathcal{L}|$, then stop and output $r_j:\forall j$.\\
+		Otherwise repeat Step (3).
+	\end{itemize}
+\end{enumerate}
