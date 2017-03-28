@@ -2,7 +2,7 @@
 \label{sec:model}
 
 Let $\mathcal{L}$ be the set of sites that holds data and runs tasks.
-For each inter-site WAN link, let $B_{i}^{j}$ be the bandwidth from site $i\in\mathcal{L}$ to site $j\in\mathcal{L}$.
+For each inter-site WAN link, let $B_{ij}$ be the bandwidth from site $i\in\mathcal{L}$ to site $j\in\mathcal{L}$.
 We assume that the bandwidths are stable within the time frame of doing real-time data analytics.
 
 \subsection{Single MapReduce Query}
@@ -12,10 +12,43 @@ This means that the total WAN usage is for a given task distribution $r$ is:
 \begin{align}
 	\sum_{i}\sum_{j\neq i}D_{i}r_{j}
 \end{align}
+which can be rearranged to:
+\begin{align}
+	\sum_{i}\sum_{j\neq i}D_ir_j & = \sum_{i}D_i\sum_{j}r_j - \sum_{j}D_jr_j =\sum_{i}D_i - \sum_{j}D_jr_j \\
+	& =\sum_{j}D_j(1-r_j)
+\end{align}
 
 If we are given a start time $s$ after the map steps are all completed and a data shuffle deadline $t$ for the reduce tasks, then the completion time is bounded as such:
 \begin{align}
-	s + \max_{(i,j):j\neq i} \left\{\dfrac{D_{i}r_{j}}{B_{i}^{j}}\right\} \leq t
+	s + \max_{(i,j):j\neq i} \left\{\dfrac{D_{i}r_{j}}{B_{ij}}\right\} \leq t
 \end{align}
 which is caused by the heterogeneous WAN bandwidth and has a bottlenecking link(s).
 We assume that $t>s$.
+
+\subsection{Single DAG Query}
+
+Let $\mathcal{N}$ be the set of nodes and $\mathcal{D}$ be the directed set of edges respectively, for the DAG of a Query Execution Plan (QEP).
+We define $D_i^k$ as the amount of input data for node $k$ at site $i$, and $r_j^k$ as the fraction of tasks for node $k$ assigned to site $j$.
+We denote $\alpha^k$ as the selectivity for node $k$ which is the proportional data shrinkage/expansion from placed tasks at each of the sites.
+For each node $l$ in the DAG that has predecessors, the sum of the predecessor nodes' output data becomes the input data: 
+\begin{align}
+	\sum_{j\in\mathcal{L}}D_j^l = \sum_{k:(k,l)\in\mathcal{D}}\alpha^k\sum_{i\in\mathcal{L}}D_i^k.
+\end{align}
+We assume that each node in the QEP requires a data shuffle which means that
+\begin{align}
+	D_j^l = \sum_{k:(k,l)\in\mathcal{D}}\alpha^kr_j^k\sum_{i\in\mathcal{L}}D_i^k.
+\end{align}
+
+We also have that the total WAN usage is:
+\begin{align}
+	\sum_{k\in\mathcal{N}}\sum_{i\in\mathcal{L}}\sum_{j\in\mathcal{L}:j\neq i}D_i^kr_j^k
+\end{align}
+which can like previously be rearranged to
+\begin{align}
+	\sum_{k\in\mathcal{N}}\sum_{i\in\mathcal{L}}\sum_{j\in\mathcal{L}:j\neq i}D_i^kr_j^k & = \sum_{k\in\mathcal{N}}\left(\sum_{i\in\mathcal{L}}D_i^k - \sum_{j\in\mathcal{L}}D_j^kr_j^k\right) \\
+	& =\sum_{k\in\mathcal{N}}\sum_{j\in\mathcal{L}}D_j^k(1-r_j^k)
+\end{align}
+%\begin{align}
+%	= \sum_{l\in\mathcal{N}}\left(\sum_{j\in\mathcal{L}}\sum_{k:(k,l)\in\mathcal{D}}\alpha^kr_j^k\sum_{i\in\mathcal{L}}D_i^k - \sum_{j\in\mathcal{L}}D_j^lr_j^l\right) \\
+%	= \sum_{l\in\mathcal{N}}\sum_{j\in\mathcal{L}}\left(\sum_{k:(k,l)\in\mathcal{D}}\alpha^kr_j^k\sum_{i\in\mathcal{L}}D_i^k - D_j^lr_j^l\right) 
+%\end{align}

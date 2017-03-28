@@ -6,30 +6,30 @@
 Since Problem \eqref{eq:opt_1Q_MR_WAN_deadline} is a convex optimization problem (linear program), we look at the Karush-Kuhn-Tucker (KKT) conditions for optimality using the following dual variables $(\mu_{ij},\theta,\lambda_j):\forall (i,j),i\neq j$:
 \begin{subequations}\label{eq:opt_1Q_MR_WAN_deadline_kkt}
 	\begin{align}
-		-D_j+\sum_{i\neq j}\dfrac{D_i}{B_i^j}\mu_{ij} + \theta - \lambda_j = 0 & \quad \forall j \label{eq:opt_1Q_MR_WAN_deadline_kkt_stat}\\
-		\mu_{ij}\left(\dfrac{D_{i}}{B_{i}^{j}}r_{j} - (t - s)\right) = 0 & \quad \forall (i,j):i\neq j \label{eq:opt_1Q_MR_WAN_deadline_kkt_cs1}\\
+		-D_j+\sum_{i\neq j}\dfrac{D_i}{B_{ij}}\mu_{ij} + \theta - \lambda_j = 0 & \quad \forall j \label{eq:opt_1Q_MR_WAN_deadline_kkt_stat}\\
+		\mu_{ij}\left(\dfrac{D_{i}}{B_{ij}}r_{j} - (t - s)\right) = 0 & \quad \forall (i,j):i\neq j \label{eq:opt_1Q_MR_WAN_deadline_kkt_cs1}\\
 		r_j\lambda_j = 0 & \quad \forall j \label{eq:opt_1Q_MR_WAN_deadline_kkt_cs2}\\
 		\mu_{ij} \geq 0 & \quad \forall (i,j):i\neq j \label{eq:opt_1Q_MR_WAN_deadline_kkt_dual1}\\
 		\lambda_j \geq 0  & \quad \forall j \label{eq:opt_1Q_MR_WAN_deadline_kkt_dual2}\\
-		\dfrac{D_{i}}{B_{i}^{j}}r_{j} - (t - s) \leq 0  & \quad \forall (i,j):i\neq j \label{eq:opt_1Q_MR_WAN_deadline_kkt_prim1}\\
+		\dfrac{D_{i}}{B_{ij}}r_{j} - (t - s) \leq 0  & \quad \forall (i,j):i\neq j \label{eq:opt_1Q_MR_WAN_deadline_kkt_prim1}\\
 		\sum_{j}r_{j} - 1 = 0 & \label{eq:opt_1Q_MR_WAN_deadline_kkt_prim2}\\
 		r_{j} \geq 0 & \quad \forall j \label{eq:opt_1Q_MR_WAN_deadline_kkt_prim3}
 	\end{align}
 \end{subequations}
 where \eqref{eq:opt_1Q_MR_WAN_deadline_kkt_stat} are the first stationary conditions, \eqref{eq:opt_1Q_MR_WAN_deadline_kkt_cs1} \eqref{eq:opt_1Q_MR_WAN_deadline_kkt_cs2} are the complimentary slackness conditions, \eqref{eq:opt_1Q_MR_WAN_deadline_kkt_dual1} \eqref{eq:opt_1Q_MR_WAN_deadline_kkt_dual2} are the dual feasibility conditions, and \eqref{eq:opt_1Q_MR_WAN_deadline_kkt_prim1} \eqref{eq:opt_1Q_MR_WAN_deadline_kkt_prim2} \eqref{eq:opt_1Q_MR_WAN_deadline_kkt_prim3} are the primal feasibility conditions.
 
-Notice that for every site $j$, \eqref{eq:opt_1Q_MR_WAN_deadline_kkt_prim1} implies that there could be bottlenecking link if $\max_{i\neq j}\left\{D_i/B_i^j\right\}>t-s$.
+Notice that for every site $j$, \eqref{eq:opt_1Q_MR_WAN_deadline_kkt_prim1} implies that there could be bottlenecking link if $\max_{i\neq j}\left\{D_i/B_{ij}\right\}>t-s$.
 There would not be a bottlenecking link only if making $r_j=1$ meets the deadline.
 Let us denote
 \begin{align}
-	U_j := \max_{i\neq j}\left\{D_i/B_i^j\right\}
+	U_j := \max_{i\neq j}\left\{D_i/B_{ij}\right\}
 \end{align}
 as the maximum upload time for site $j$ if $r_j=1$, and denote
 \begin{align}
-	b_j: = \arg\max_{i\neq j}\left\{D_i/B_i^j\right\}
+	b_j: = \arg\max_{i\neq j}\left\{D_i/B_{ij}\right\}
 \end{align}
 as the set of bottlenecking data sources.
-If for any $i\notin b_j$, then \eqref{eq:opt_1Q_MR_WAN_deadline_kkt_prim1} is satisfied if it satisfied for $b_j$ and also $D_i/B_i^j<t-s$.
+If for any $i\notin b_j$, then \eqref{eq:opt_1Q_MR_WAN_deadline_kkt_prim1} is satisfied if it satisfied for $b_j$ and also $D_i/B_{ij}<t-s$.
 This fact and \eqref{eq:opt_1Q_MR_WAN_deadline_kkt_cs1} implies that $\mu_{ij}=0$ if $i\notin b_j$.
 Now the KKT conditions \eqref{eq:opt_1Q_MR_WAN_deadline_kkt} have redundant conditions that can be eliminated to:
 \begin{subequations}\label{eq:opt_1Q_MR_WAN_deadline_kkt2}
@@ -105,8 +105,8 @@ We have the following algorithm:
 		\item Order $D_j$ in descending order and relabel the indexes for this ordering.
 		\item Set $y := 1$, $k := 1$, and $r_j := 0:\forall j$
 		\item For each site $j$, set:\\
-		$U_j := \max_{i\neq j}\left\{D_i/B_i^j\right\}$\\
-		$b_j := \arg\max_{i\neq j}\left\{D_i/B_i^j\right\}$.
+		$U_j := \max_{i\neq j}\left\{D_i/B_{ij}\right\}$\\
+		$b_j := \arg\max_{i\neq j}\left\{D_i/B_{ij}\right\}$.
 	\end{itemize}
 	\item \textbf{Test for feasibility:}
 	\begin{itemize}
