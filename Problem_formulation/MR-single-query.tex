@@ -1,7 +1,66 @@
-\section{Optima}
-\label{sec:optima}
+\section{Single MapReduce Query}
 
-\subsection{Single MapReduce Query with a deadline}
+\subsection{Model}
+
+Let $\mathcal{L}$ be the set of sites that holds data and runs tasks.
+For each inter-site WAN link, let $B_{ij}$ be the bandwidth from site $i\in\mathcal{L}$ to site $j\in\mathcal{L}$.
+We assume that the bandwidths are stable within the time frame of doing real-time data analytics.
+
+We perform the map tasks at the sites that contain the associated data and denote $D_{i}$ as the output data from all of the map tasks at site $i$.
+The fraction of reduce tasks assigned to site $j$ is denoted as $r_{j}$ which is also the fraction of all other sites' data that must be transfered through the WAN to $j$.
+This means that the total WAN usage is for a given task distribution $r$ is:
+\begin{align}
+	\sum_{i}\sum_{j\neq i}D_{i}r_{j}
+\end{align}
+which can be rearranged to:
+\begin{align}
+	\sum_{i}\sum_{j\neq i}D_ir_j & = \sum_{i}D_i\sum_{j}r_j - \sum_{j}D_jr_j =\sum_{i}D_i - \sum_{j}D_jr_j \\
+	& =\sum_{j}D_j(1-r_j)
+\end{align}
+
+If we are given a start time $s$ after the map steps are all completed and a data shuffle deadline $t$ for the reduce tasks, then the completion time is bounded as such:
+\begin{align}
+	s + \max_{(i,j):j\neq i} \left\{\dfrac{D_{i}r_{j}}{B_{ij}}\right\} \leq t
+\end{align}
+which is caused by the heterogeneous WAN bandwidth and has a bottlenecking link(s).
+We assume that $t>s$.
+
+\subsection{Problem}
+
+\subsubsection*{Minimize WAN usage}
+
+When minimizing WAN usage for a MapReduce data shuffle we have the following optimization problem:
+\begin{subequations}
+	\begin{align}
+		\min_{r} \quad & \sum_{j}D_j(1-r_j) \\
+		\text{s.t.} \quad & \sum_{j}r_{j} = 1 \\
+		& r_{j} \geq 0 \quad \forall j
+	\end{align}
+\end{subequations}
+
+\subsubsection*{Feasibility to meet deadline}
+
+We want to find a feasible $r$ so that the data shuffle finishes at or before $t$:
+\begin{subequations}
+	\begin{align}
+		\text{find } r \text{ s.t.} \quad & \dfrac{D_{i}r_{j}}{B_{ij}} \leq t - s \quad \forall (i,j):j\neq i \\
+		& \sum_{j}r_{j} = 1 \\
+		& r_{j} \geq 0 \quad \forall j
+	\end{align}
+\end{subequations}
+
+\subsubsection*{Minimize WAN usage given a shuffle deadline}
+When minimizing WAN usage for a MapReduce data shuffle for a given deadline $t$ we have the following optimization problem:
+\begin{subequations}\label{eq:opt_1Q_MR_WAN_deadline}
+	\begin{align}
+		\min_{r} \quad & \sum_{j}D_j(1-r_j) \\
+		\text{ s.t.} \quad & \dfrac{D_{i}r_{j}}{B_{ij}} \leq t - s \quad \forall (i,j):i\neq j \\
+		& \sum_{j}r_{j} = 1 \\
+		& r_{j} \geq 0 \quad \forall j
+	\end{align}
+\end{subequations}
+
+\subsection{Optima}
 
 Since Problem \eqref{eq:opt_1Q_MR_WAN_deadline} is a convex optimization problem (linear program), we look at the Karush-Kuhn-Tucker (KKT) conditions for optimality using the following dual variables $(\mu_{ij},\theta,\lambda_j):\forall (i,j),i\neq j$:
 \begin{subequations}\label{eq:opt_1Q_MR_WAN_deadline_kkt}
@@ -97,6 +156,8 @@ or the maximum WAN savings
 	D_l-\dfrac{1}{\sum_{j}\frac{1}{U_j}}\sum_{j}\frac{D_j}{U_j}
 \end{align}
 has significant cost, then developing an optimization algorithm is worthwhile.
+
+\subsection{Algorithm}
 
 We have the following algorithm:
 \begin{enumerate}

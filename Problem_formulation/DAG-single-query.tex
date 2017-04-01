@@ -1,31 +1,10 @@
-\section{Model}
-\label{sec:model}
+\section{Single DAG Query}
+
+\subsection{Model}
 
 Let $\mathcal{L}$ be the set of sites that holds data and runs tasks.
 For each inter-site WAN link, let $B_{ij}$ be the bandwidth from site $i\in\mathcal{L}$ to site $j\in\mathcal{L}$.
 We assume that the bandwidths are stable within the time frame of doing real-time data analytics.
-
-\subsection{Single MapReduce Query}
-We perform the map tasks at the sites that contain the associated data and denote $D_{i}$ as the output data from all of the map tasks at site $i$.
-The fraction of reduce tasks assigned to site $j$ is denoted as $r_{j}$ which is also the fraction of all other sites' data that must be transfered through the WAN to $j$.
-This means that the total WAN usage is for a given task distribution $r$ is:
-\begin{align}
-	\sum_{i}\sum_{j\neq i}D_{i}r_{j}
-\end{align}
-which can be rearranged to:
-\begin{align}
-	\sum_{i}\sum_{j\neq i}D_ir_j & = \sum_{i}D_i\sum_{j}r_j - \sum_{j}D_jr_j =\sum_{i}D_i - \sum_{j}D_jr_j \\
-	& =\sum_{j}D_j(1-r_j)
-\end{align}
-
-If we are given a start time $s$ after the map steps are all completed and a data shuffle deadline $t$ for the reduce tasks, then the completion time is bounded as such:
-\begin{align}
-	s + \max_{(i,j):j\neq i} \left\{\dfrac{D_{i}r_{j}}{B_{ij}}\right\} \leq t
-\end{align}
-which is caused by the heterogeneous WAN bandwidth and has a bottlenecking link(s).
-We assume that $t>s$.
-
-\subsection{Single DAG Query}
 
 Let $\mathcal{N}$ be the set of nodes and $\mathcal{D}$ be the directed set of edges respectively, for the DAG of a Query Execution Plan (QEP).
 We define $D_i^k$ as the amount of input data for node $k$ at site $i$, and $r_j^k$ as the fraction of tasks for node $k$ assigned to site $j$.
@@ -48,7 +27,18 @@ which can like previously be rearranged to
 	\sum_{k\in\mathcal{N}}\sum_{i\in\mathcal{L}}\sum_{j\in\mathcal{L}:j\neq i}D_i^kr_j^k & = \sum_{k\in\mathcal{N}}\left(\sum_{i\in\mathcal{L}}D_i^k - \sum_{j\in\mathcal{L}}D_j^kr_j^k\right) \\
 	& =\sum_{k\in\mathcal{N}}\sum_{j\in\mathcal{L}}D_j^k(1-r_j^k)
 \end{align}
-%\begin{align}
-%	= \sum_{l\in\mathcal{N}}\left(\sum_{j\in\mathcal{L}}\sum_{k:(k,l)\in\mathcal{D}}\alpha^kr_j^k\sum_{i\in\mathcal{L}}D_i^k - \sum_{j\in\mathcal{L}}D_j^lr_j^l\right) \\
-%	= \sum_{l\in\mathcal{N}}\sum_{j\in\mathcal{L}}\left(\sum_{k:(k,l)\in\mathcal{D}}\alpha^kr_j^k\sum_{i\in\mathcal{L}}D_i^k - D_j^lr_j^l\right) 
-%\end{align}
+
+\subsection{Problem}
+
+\subsubsection*{Minimize WAN usage}
+
+When minimizing WAN usage for a DAG we have the following optimization problem:
+\begin{subequations}
+	\begin{align}
+		\min_{r,D} \quad & \sum_{k\in\mathcal{N}}\sum_{j\in\mathcal{L}}D_j^k(1-r_j^k) \\
+		\text{s.t.} \quad & \sum_{j}r_j^k = 1 \quad \forall k\in\mathcal{N}\\
+		& r_j^k \geq 0 \quad \forall j\in\mathcal{L},\forall k\in\mathcal{N} \\
+		& D_j^l = \sum_{k:(k,l)\in\mathcal{D}}\alpha^kr_j^k\sum_{i\in\mathcal{L}}D_i^k \quad \forall l\in\mathcal{N}
+	\end{align}
+\end{subequations}
+Even without adding deadlines, this problem has nonlinear terms in the objective function and the last equality constraint.
