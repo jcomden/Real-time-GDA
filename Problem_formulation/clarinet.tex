@@ -5,15 +5,29 @@
 The paper's introduction gives the following claims which need to be investigated:
 
 \begin{enumerate}
-	\item Formulating an optimal solution for a multi-query, network-aware, joint query planning/placement/scheduling is computationally intractable.
+	\item Formulating an optimal solution for a multi-query, network-aware, joint query planning/placement/scheduling is computationally intractable. \\
+	$\checkmark$ Cites two sources that even for a single query with the given scheduling assumptions is NP-hard.
 	\item CLARINET does joint multi-query planning, task placement, and task scheduling.
-	It picks the best WAN-aware QEP/task placement/take scheduling per query and provides ``hints" to the query execution layer.
-	\item They show how to compute the WAN-optimal QEP for a single query which includes task placement and task scheduling.
+	It picks the best WAN-aware QEP/task placement/take scheduling per query and provides ``hints" to the query execution layer.\\
+	$\checkmark$ ``hints" are location and start times of each task.
+	\item They show how to (heuristically) compute the WAN-optimal QEP for a single query which includes task placement and task scheduling.
 	The solution relies on reserving WAN links.
-	\item They allow for cross-query optimization of $n$ queries.
+	This is an effective heuristic for the best single-query QEP, that decouples placement and scheduling.
+	\item They allow for cross-query (heuristic) optimization of $n$ queries.
 	They order the queries by optimal QEP expected completion time.
 	Then they choose the $i$th query's QEP considering the WAN impact of the $i-1$ preceding queries.
 	\item They heuristically compact the schedules tightly in time by considering the above order and groups of $k\leq n$ queries.
 	\item They extend the above heuristic to accommodate (i) fair treatment of queries, (ii) minimize WAN bandwidth costs, and (iii) online query arrivals.
-	
+	\item Combats resource fragmentation and optimizes average query completion times.
+\end{enumerate}
+
+\subsection{Model}
+There are $n$ queries and each query $j$ has a set QEP-Set $QS_j$ from which one QEP must be chosen.
+Also chosen are the task locations and task start times.
+
+Scheduling assumptions:
+\begin{enumerate}
+	\item Network transfers do not overlap.
+	In fact, they have a theorem that proves that any optimal schedule has an equivalent non-overlapped schedule.
+	\item Obtain non-interruptible transfer schedules.
 \end{enumerate}
