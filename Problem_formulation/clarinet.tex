@@ -8,20 +8,20 @@ The paper's introduction gives the following claims which were interrogated:
 	\item Formulating an optimal solution for a multi-query, network-aware, joint query planning/placement/scheduling is computationally intractable. \\
 	$\checkmark$ Cites two sources that even for a single query with the given scheduling assumptions is NP-hard.
 	\item CLARINET does joint multi-query planning.
-	It picks the best WAN-aware QEP/task placement/take scheduling per query and provides ``hints" (location and start times of each task) to the query execution layer.
+	It picks the best WAN-aware DAG/task placement/take scheduling per query and provides ``hints" (location and start times of each task) to the query execution layer.
 	It optimizes for minimal average query completion times.
 	Task placement and task scheduling within a query are not done jointly.\\
 	$\checkmark$ Joint multi-query planning although not optimal because of NP-hardness.
-	\item They show how to (heuristically) compute the WAN-optimal QEP for a single query which includes task placement and task scheduling.
+	\item They show how to (heuristically) compute the WAN-optimal DAG for a single query which includes task placement and task scheduling.
 	The solution relies on reserving WAN links.
-	This is an effective heuristic for the best single-query QEP, that decouples placement and scheduling.\\
+	This is an effective heuristic for the best single-query DAG, that decouples placement and scheduling.\\
 	$\checkmark$ Task placement and scheduling are decoupled.\\ 
 	$\times$ But not a jointly optimal decomposition which is NP-hard. \\
 	$\times$ Task placement is minimizes time usage of WAN with a linear program, not completion time which would become a piecewise linear program. \\
 	$\checkmark$ Given a task placement for a single query, the scheduling problem gives the optimal (non-interruptible) schedule to minimize that query's completion time.
 	\item They allow for cross-query (heuristic) optimization of $n$ queries.
-	They order the queries by optimal QEP expected completion time.
-	Then they choose the $i$th query's QEP considering the WAN impact of the $i-1$ preceding queries.
+	They order the queries by optimal DAG expected completion time.
+	Then they choose the $i$th query's DAG considering the WAN impact of the $i-1$ preceding queries.
 	$\checkmark$ This mimics the heuristic rule Shortest Job First (SJF).
 	\item They heuristically compact the schedules tightly in time by considering the above order and groups of $k\leq n$ queries to combat resource fragmentation. \\
 	$\checkmark$ This is done at a cost to average completion time.
@@ -30,28 +30,28 @@ The paper's introduction gives the following claims which were interrogated:
 \end{enumerate}
 
 \subsection{Model}
-There are $n$ queries and each query $j$ has a set QEP-Set $QS_j$ from which one QEP must be chosen.
+There are $n$ queries and each query $j$ has a set DAG-Set $QS_j$ from which one DAG must be chosen.
 Also chosen are the task locations and task start times.
 
 DAG assumptions:
 \begin{enumerate}
 	\item Each node in the DAG represents a stage which is a group of tasks.
-	\josh{We were thinking of DAG nodes representing all tasks, not just a group of tasks.}
-	\item Each stage in the DAG has a known amount of output data $D_j$ at site $j$.
-	\item Each stage is assumed to be either a set of Map tasks or a set of Reduce tasks.
-	\josh{This seems pretty restrictive.}
-	\item Each Map stage is placed at the site holding its input data.
-	\item Each Reduce stage can be distributed to all sites and is represented by a continuous fraction $r_j$, i.e. the fraction of reduce tasks for the stage at site $j$.
-	\josh{I think this simplification is the reason why they choose to model only Map and Reduce tasks.}
+	\item For the task placement decision, each stage is assumed to be either a set of Map tasks or a set of Reduce tasks.
+	\josh{This seems pretty restrictive.} \\
+	(i) Each Map stage is placed at the site holding its input data. \\
+	(ii) Each Reduce stage can be distributed to all sites and is represented by a continuous fraction $r_j$, i.e. the fraction of reduce tasks for the stage at site $j$.
+	\josh{I think this ability to geographically distribute tasks within a stage and the continuous decision simplification is the reason why they chose to model only Map and Reduce tasks.}
+	\item Each stage in the DAG has a known amount of output data $D_j$ at each site $j$.
 \end{enumerate}
 
 Scheduling assumptions:
 \begin{enumerate}
 	\item Network transfers do not overlap.
 	In fact, they have a theorem that proves that any optimal schedule has an equivalent non-overlapped schedule.
+	This avoids having to decide concurrent flows.
 	\item Obtain non-interruptible transfer schedules.
-	\item Bandwidth $B_{ij}$ between sites $i$ and $j$ is known and constant.
 	\item The compute phase of a task can only start after all its inputs are available to it at its site.
+	\item Bandwidth $B_{ij}$ between sites $i$ and $j$ is known and constant.
 \end{enumerate}
 
 \subsection{Single Query Problem}
@@ -60,15 +60,17 @@ The goal is to minimize the query execution time.
 First, the tasks are placed across the sites.
 Then, the data transfers are scheduled.
 
-Given a DAG: Within each stage (single node of the DAG), the decision of (Reduce) task placement is \emph{decided} independently from other stages but \emph{have} a dependency on each other through a variable $\tau_{ij}$.
-This value is the length of time already reserved on the link between sites $i$ and $j$ for stages that do not have a DAG ordering with this stage.
-
 \subsubsection{Task placement within a (Reduce) stage}
+
+Given a DAG, each stage's task placement is decided one-by-one.
+
+Within each stage (single node of the DAG), the decision of (Reduce) task placement is \emph{decided} independently from other stages but \emph{have} a dependency on each other through a reserved amount of time $\tau_{ij}$ for the link between sites $i$ and $j$.
+This value is the length of time already reserved to use this link by other stages that do not have a DAG ordering with this stage.
 
 The following linear program is given to decide the distribution of reduce tasks $\{r_j\}$ in a particular stage that respects the current reservation status of each link:
 \begin{subequations}
 	\begin{align}
-		\min_r \quad & \sum_{i,j}\left(\dfrac{D_ir_j}{B_{ij}}+\tau_{ij}\right) \\
+		\min_r \quad & \sum_{j}\sum_{i\neq j}\left(\dfrac{D_ir_j}{B_{ij}}+\tau_{ij}\right) \\
 		\text{s.t.} \quad & \sum_jr_j=1 \\
 		& r_j \geq 0 \quad\forall j
 	\end{align}
@@ -83,23 +85,27 @@ After $\{r_j\}$ is decided, each $\tau_{ij}$ is incremented by $\dfrac{D_ir_j}{B
 	But then the order in which these problems are solved will matter.
 	However, there is no discussion in order in which these problems are solved since it doesn't matter with the summation operator being used.}
 
-After deciding the task placement for each stage, task scheduling for the QEP is decided.
+After deciding the task placement for each stage, task scheduling for the DAG is decided.
 
-\subsubsection{Scheduling tasks in a QEP}
+\subsubsection{Scheduling tasks in a DAG}
+
+Each DAG gives a partial ordering of the stages.
+For stages that compete over the same network links but do not have an ordering, an ordering must be decided.
 
 The DAG is augmented in two ways.
 First, each data transfer is made into a node that is place between two the associated stages.
 Second, tasks from the same stage at the same site are coalesced into a sub-stage.
 From here on, only the start times $s$ of the sub-stages will be scheduled.
 
-Given two (data transfer) sub-stages $u$ and $v$ in a DAG, if $u$ must finish before $v$ then we have the following constraint:
-\begin{align}
+For the explicitly stated order in the DAG and given two (data transfer) sub-stages $u$ and $v$ in a DAG, if $u$ must finish before $v$ then we have the following constraint:
+\begin{align}\label{eq:DAG_ordered_uv}
 	s(v) \geq s(u) + d(u)
 \end{align}
 where $s(u)$ is the start time and $d(u)$ is the duration of stage $u$.
 
-To decide the order between sub-stages that don't have an ordering but need to have a non-overlapping schedule we add the following constraints:
-\begin{subequations}
+To decide the order between sub-stages that don't have an ordering but need to have a non-overlapping schedule.
+We add the following constraints to decide whether sub-stage $u$ should be complete before $v$ or vice versa:
+\begin{subequations} \label{eq:DAG_unordered_uv}
 	\begin{align}
 		s(v) & \geq s(u) + d(u) - N(1-z_{uv}) \\
 		s(u) & \geq s(v) + d(v) - N(z_{uv})
@@ -107,18 +113,27 @@ To decide the order between sub-stages that don't have an ordering but need to h
 \end{subequations}
 where $z_{uv}$ is a binary decision variable that indicates if $v$ is executed after $u$, and $N$ is a large constant.
 
-With the above scheduling constraints the $i$-th QEP for the query is:
-\begin{align}
-	\Phi^i := \max_{u\in\text{QEP}^i} s(u) + d(u)
-\end{align}
+With the above scheduling constraints the $i$-th DAG, we measure the completion time of the query as the last finished task of the query:
+\begin{subequations}\label{eq:DAG_opt_schedule}
+	\begin{align}
+		\Phi^i := & \max_{u\in\text{DAG}^i} s(u) + d(u)\\
+		& \text{s.t. } \eqref{eq:DAG_ordered_uv} \eqref{eq:DAG_unordered_uv}
+	\end{align}
+\end{subequations}
 which is a binary integer linear program.
+\josh{This binary integer linear program may not scale well for larger DAGs.
+	Can we do better?}
 
 \subsection{Multiple Query Problem}
+
+Essentially, multiple queries are handled as processing the Shortest Job First (SJF).
+However, CLARINET makes some modifications (see below).
+
 
 \subsubsection{Handling previously scheduled queries}
 
 Suppose $\text{low}(b)$ and $\text{high}(b)$ represents the start and end times of a reservation on a link for a previously scheduled query.
-Then we add the following two constraints to the scheduling problem:
+Then we add the following two constraints to the scheduling problem \eqref{eq:DAG_opt_schedule} when scheduling other queries:
 \begin{subequations}
 	\begin{align}
 		s(u) & \geq \text{high}(b) - N(1-x_{ub}) \\
@@ -126,27 +141,56 @@ Then we add the following two constraints to the scheduling problem:
 	\end{align}
 \end{subequations}
 where $x_{ub}$ is a binary indicator denoting that $u$ is scheduled after interval $b$.
+The constraints work similar to \eqref{eq:DAG_unordered_uv}.
 
-\josh{Below, only the high-level ideas are given because they are all explicitly heuristics.}
 
 \subsubsection{Handling resource fragmentation}
 
-As queries get scheduled, resources become fragmented from reservations happening without accounting for other queries.
+As queries get scheduled, resources (links) become fragmented from reservations happening without accounting for other queries.
 They present a heuristic that optimally packs subsets of queries of size $k\leq n$.
+
+First, they calculate the execution time for each query as if the query was scheduled alone.
+Based on this, the queries are put in an increasing order.
+
+The first $k$ queries are then scheduled.
+While sweeping through time, each sub-stage is scheduled from this set when it and its link first become free.
+When a query has been completely scheduled, it leaves the set and the next shortest query left in original ordering replaces it.
+This continues until all queries have been scheduled.
+
+This heuristic allows query link usages to become better packed.
+However, at high values of $k$, the average completion time may rise which means that there is a tradeoff between efficiently using the WAN and query completion time among multiple queries.
 
 \subsubsection{Fairness}
 
 The multi-query heuristics above favor shorter queries over longer queries.
-To combat this, they target that each query should finish within a specific multiple of its completion time if it was the only query running.
-Then they only pick the $k$ queries from a set of queries that are far from this target.
+To combat this, they target that each query should finish within a specific multiple $m$ of its stand alone completion time $\text{dur}_j$.
+
+At time $t$ when a query is to be added to the query set (of size $k$) that is being scheduled, each of the unscheduled queries is given the following score:
+\begin{align}
+	\text{Prox}_j(t) = 1 - \dfrac{n\times\text{dur}_j-t}{n\times\text{dur}_j}
+\end{align}
+and then sorted in descending order.
+From the first $H$ of them in this order, the one with the shortest stand alone execution time is added to the query set being scheduled.
+This heuristic favors queries that are closer to their ``fair" deadline.
 
 \subsubsection{WAN utilization}
 
-To limit WAN usage, they only select QEPs that have a WAN usage below a threshold $\beta$.
+To limit WAN usage, they only select DAGs that have a WAN usage below a threshold $\beta$.
+This strictly limits each query's WAN usage.
 
 \subsubsection{Online Arrivals}
 
 When a new query arrives, update and recompute for all queries that have yet to have any tasks start to be executed.
 
-\josh{In thinking about our own problem to solve, I think our main focus could be on (i) individual task placement, and (ii) for a general DAG of tasks since these are the weakest parts of this paper.
-Other sub-areas we could focus on are the problems that they only attack with heuristics such as: (i) WAN usage, (ii) online multiple queries, (iii) fairness of multiple queries}
+\subsection{Possible directions}
+
+\josh{In thinking about our own problem to solve, I think our main focus could be on:
+	\begin{enumerate}
+		\item CLARINET assumes either a Map or Reduce structure for each stage of the DAG when deciding task placement.
+		Can we extend this for a more general DAG stage type?
+		\item CLARINET only changes the schedules for non-executed queries when a new query arrives.
+		Can we also change partially executed queries to make the system more flexible and in return experience a switching cost?
+		\item CLARINET focuses exclusively on minimizing the average query completion time.
+		This may not be fair, and even with its fairness heuristic, it still favors shorter queries.
+		Can we schedule queries' usage of the WAN to be more fair?
+	\end{enumerate}}
