@@ -55,10 +55,14 @@
 \usepackage{ifthen}
 \newboolean{showcomments}
 \setboolean{showcomments}{true}
-\newcommand{\yue}[1]{\ifthenelse{\boolean{showcomments}}
-{ \textcolor{red}{(Yue says:  #1)}}{}}
+\newcommand{\anshul}[1]{\ifthenelse{\boolean{showcomments}}
+{ \textcolor{red}{(Anshul says:  #1)}}{}}
 \newcommand{\josh}[1]{\ifthenelse{\boolean{showcomments}}
 { \textcolor{red}{(Josh says:  #1)}}{}}
+\newcommand{\tanle}[1]{\ifthenelse{\boolean{showcomments}}
+{ \textcolor{red}{(Tan Le says:  #1)}}{}}
+\newcommand{\yi}[1]{\ifthenelse{\boolean{showcomments}}
+{ \textcolor{red}{(Yi says:  #1)}}{}}
 \newcommand{\zhenhua}[1]{\ifthenelse{\boolean{showcomments}}
 { \textcolor{red}{(Zhenhua says:  #1)}}{}}
 \newcommand{\addcites}[0]{\ifthenelse{\boolean{showcomments}}
