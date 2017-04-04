@@ -193,4 +193,7 @@ When a new query arrives, update and recompute for all queries that have yet to 
 		\item CLARINET focuses exclusively on minimizing the average query completion time.
 		This may not be fair, and even with its fairness heuristic, it still favors shorter queries.
 		Can we schedule queries' usage of the WAN to be more fair?
+		\item CLARINET's task scheduling problem requires the use of a binary integer linear program.
+		This may be intractable for large DAGs.
+		Can we design a faster algorithm or formulate a more tractable problem?
 	\end{enumerate}}
