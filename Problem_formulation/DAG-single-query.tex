@@ -2,43 +2,89 @@
 
 \subsection{Model}
 
-Let $\mathcal{L}$ be the set of sites that holds data and runs tasks.
-For each inter-site WAN link, let $B_{ij}$ be the bandwidth from site $i\in\mathcal{L}$ to site $j\in\mathcal{L}$.
+\subsubsection*{Wide Area Network}
+
+Let $\mathcal{S}$ be the set of sites that hold data and run tasks, and $\mathcal{L}$ be the set of directed edges that represent inter-site links.
+For each inter-site WAN link $(i,j)\in\mathcal{L}$, let $B_{ij}$ be the bandwidth from site $i$ to site $j$.
 We assume that the bandwidths are stable within the time frame of doing real-time data analytics.
 
-Let $\mathcal{N}$ be the set of nodes and $\mathcal{D}$ be the directed set of edges respectively, for the DAG of a Query Execution Plan (QEP).
-We define $D_i^k$ as the amount of input data for node $k$ at site $i$, and $r_j^k$ as the fraction of tasks for node $k$ assigned to site $j$.
-We denote $\alpha^k$ as the selectivity for node $k$ which is the proportional data shrinkage/expansion from placed tasks at each of the sites.
-For each node $l$ in the DAG that has predecessors, the sum of the predecessor nodes' output data becomes the input data: 
-\begin{align}
-	\sum_{j\in\mathcal{L}}D_j^l = \sum_{k:(k,l)\in\mathcal{D}}\alpha^k\sum_{i\in\mathcal{L}}D_i^k.
-\end{align}
-We assume that each node in the QEP requires a data shuffle which means that
-\begin{align}
-	D_j^l = \sum_{k:(k,l)\in\mathcal{D}}\alpha^kr_j^k\sum_{i\in\mathcal{L}}D_i^k.
-\end{align}
+\subsubsection*{DAG of tasks}
 
-We also have that the total WAN usage is:
+Let $\mathcal{T}$ be the set of stages and $\mathcal{D}$ be the directed set of edges that represent stage dependencies for the DAG, respectively.
+Each stage dependency $(k,l)\in\mathcal{D}$ also has a corresponding data amount $D^{kl}$ that must be transfered from stage $k$ to stage $l$.
+Some of the stages do not have any incoming edges and so represent the raw input data.
+Let $\mathcal{R}:=\left\{(k,i)\right\}$ be a set of stage and location pairs for the raw input data in which stage $k\in\mathcal{T}$ represents the input data and site $i\in\mathcal{S}$ is the location of this input data.
+The DAG also has a start time $T_0$ and a finish time $T_f$ for which the schedule of data transfers must respect.
+
+\subsubsection*{Stage assignment}
+
+The decision to place stage $k$ at site $i$ is represented by the binary decision variable $x_i^k$.
+This means that for any directed edge $(k,l)\in\mathcal{D}$, if $x_i^k=1$ and $x_j^l=1$, then $D^{kl}$ of data will be transfered across link $(i,j)\in\mathcal{L}$.
+We can represent this data transfer amount by $x_i^kD^{kl}x_j^l$ and the duration of data transfer by $x_i^k(D^{kl}/B_{ij})x_j^l$.
+Note that stages which represent raw data locations (no incoming edges) have a decision variable which is preset according to its location.
+
+\subsubsection*{Stage scheduling}
+
+We assume that data transfers on a particular link are non-overlapping and non-interruptible.
+Let $s_{ij}^{kl}$ be the scheduled start time for data transfer $(k,l)\in\mathcal{D}$ on link $(i,j)\in\mathcal{L}$.
+We also assume that a stage must have completely received all of its input data before it can process and start transferring data to another stage.
+For this reason we have the following scheduling constraint to respect DAG dependencies:
 \begin{align}
-	\sum_{k\in\mathcal{N}}\sum_{i\in\mathcal{L}}\sum_{j\in\mathcal{L}:j\neq i}D_i^kr_j^k
+	 \max_{k:(k,l)\in\mathcal{D}}\left\{\max_{(i',j')\in\mathcal{L}}\left\{s_{i'j'}^{kl}+x_{i'}^k\dfrac{D^{kl}}{B_{i'j'}}x_{j'}^l\right\}\right\} \leq s_{ij}^{lm}  \quad\quad \nonumber \\
+	 \quad\quad \forall(i,j)\in\mathcal{L},\forall(l,m)\in\mathcal{D} \label{eq:DAG_stage_start}
 \end{align}
-which can like previously be rearranged to
-\begin{align}
-	\sum_{k\in\mathcal{N}}\sum_{i\in\mathcal{L}}\sum_{j\in\mathcal{L}:j\neq i}D_i^kr_j^k & = \sum_{k\in\mathcal{N}}\left(\sum_{i\in\mathcal{L}}D_i^k - \sum_{j\in\mathcal{L}}D_j^kr_j^k\right) \\
-	& =\sum_{k\in\mathcal{N}}\sum_{j\in\mathcal{L}}D_j^k(1-r_j^k)
-\end{align}
+Also, each data transfer must respect the start and finish time $[T_0,T_f]$ of the DAG:
+\begin{subequations}\label{eq:DAG_deadline}
+	\begin{align}
+		\min_{(k,l)\in\mathcal{D}}\left\{\min_{(i,j)\in\mathcal{L}}\left\{s_{ij}^{kl}\right\}\right\} & \geq T_0 \\
+		\max_{(k,l)\in\mathcal{D}}\left\{\max_{(i,j)\in\mathcal{L}}\left\{s_{ij}^{kl}+x_{i}^k\dfrac{D^{kl}}{B_{ij}}x_{j}^l\right\}\right\} & \leq T_f
+	\end{align}
+\end{subequations}
+
+There are data transfers that don't have an ordering because the DAG does not contain a path that connects them.
+However, each link must have a specified ordering to schedule the data transfers.
+Let $z_{ij}^{kl|mn}$ be the binary decision on link $(i,j)\in\mathcal{L}$ that represents data transfer $(k,l)\in\mathcal{D}$ being scheduled to start and complete before data transfer $(m,n)\in\mathcal{D}$ starts.
+The following constraint defines this relation mathematically:
+\begin{subequations}\label{eq:DAG_data_trans_start}
+	\begin{align}
+		s_{ij}^{kl}+x_{i}^k\dfrac{D^{kl}}{B_{ij}}x_{j}^l \leq s_{ij}^{mn} + M(1-z_{ij}^{kl|mn}) \quad \nonumber \\
+		\quad\forall \{(k,l),(m,n)\} \in\mathcal{D}:(k,l)\neq(m,n), \forall(i,j)\in\mathcal{L}\\
+		z_{ij}^{kl|mn} + z_{ij}^{mn|kl} = 1 \quad \nonumber\\
+		\quad\forall \{(k,l),(m,n)\} \in\mathcal{D}:(k,l)\neq(m,n), \forall(i,j)\in\mathcal{L}
+	\end{align}
+\end{subequations}
+where $M$ is a large constant (e.g. $M:=T_f-T_0$).
+
+
 
 \subsection{Problem}
 
-\subsubsection*{Minimize WAN usage}
+\subsubsection{General DAG - Minimize WAN usage}
 
-When minimizing WAN usage for a DAG we have the following optimization problem:
-\begin{subequations}
+Suppose that our objective is to minimize WAN usage by placing the stages from the DAG and scheduling the data transfers.  We get the following optimization problem:
+\begin{subequations} \label{eq:opt_genDAG}
 	\begin{align}
-		\min_{r,D} \quad & \sum_{k\in\mathcal{N}}\sum_{j\in\mathcal{L}}D_j^k(1-r_j^k) \\
-		\text{s.t.} \quad & \sum_{j}r_j^k = 1 \quad \forall k\in\mathcal{N}\\
-		& r_j^k \geq 0 \quad \forall j\in\mathcal{L},\forall k\in\mathcal{N} \\
-		& D_j^l = \sum_{k:(k,l)\in\mathcal{D}}\alpha^kr_j^k\sum_{i\in\mathcal{L}}D_i^k \quad \forall l\in\mathcal{N}
+		\min_{\mathbf{x},\mathbf{z},\mathbf{s}} \quad & \sum_{(k,l)\in\mathcal{D}}\sum_{(i,j)\in\mathcal{L}}x_i^kD^{kl}x_j^l \label{eq:opt_genDAG_WAN} \\
+		\text{s.t.} \quad & \sum_{i\in\mathcal{S}}x_i^k = 1 \quad \forall k\in\mathcal{T} \label{eq:opt_genDAG_place1} \\
+		& x_i^k \in\{0,1\} \quad \forall i\in\mathcal{S},k\in\mathcal{T} \label{eq:opt_genDAG_placebin} \\
+		& z_{ij}^{kl|mn} \in\{0,1\} \nonumber\\
+		& \quad \forall \{(k,l),(m,n)\} \in\mathcal{D}:(k,l)\neq(m,n), \forall(i,j)\in\mathcal{L} \label{eq:opt_genDAG_ordersbin} \\
+		& \eqref{eq:DAG_stage_start} \eqref{eq:DAG_deadline} \eqref{eq:DAG_data_trans_start} \label{eq:opt_genDAG_schedule}
 	\end{align}
 \end{subequations}
-Even without adding deadlines, this problem has nonlinear terms in the objective function and the last equality constraint.
+where \eqref{eq:opt_genDAG_WAN} is the total WAN usage, \eqref{eq:opt_genDAG_place1} \eqref{eq:opt_genDAG_placebin} place each task at exactly one site, \eqref{eq:opt_genDAG_ordersbin} \eqref{eq:opt_genDAG_schedule} are the scheduling constraints of the data transfers.
+
+Notice that the objective function and first two constraints (\eqref{eq:opt_genDAG_WAN} \eqref{eq:opt_genDAG_place1} \eqref{eq:opt_genDAG_placebin}) only depend on the stage placement decisions $\mathbf{x}$, while the following constraints (\eqref{eq:opt_genDAG_ordersbin} \eqref{eq:opt_genDAG_schedule}) depend on both the stage placement and scheduling $(\mathbf{z}$,$\mathbf{s})$ decisions.
+
+\subsubsection{MapReduce Relaxation}
+Suppose we relaxed the task placement decisions from being binary to nonnegative continuous, i.e. replacing \eqref{eq:opt_genDAG_placebin} with:
+\begin{align}
+	x_i^k \geq 0 \quad \forall i\in\mathcal{S},k\in\mathcal{T},
+\end{align}
+then the each stage fits the simplification used in a MapReduce model.
+
+The MapReduce simplification works by allowing a reduce stage to be distributed across all sites where $r^l_j$ represents the fraction of reduce tasks for stage $l$ that are at site $j$.
+This model assumes that the amount of input data needed at a site and the amount of output data produced is proportional to the fraction of reduce tasks placed there.
+This means that if stage $k$ precedes stage $l$ in the DAG, stage $l$'s reduce tasks at site $j$ need a total of $D^{kl}r_j^l$ input data from all sites and the stage $k$'s reduce tasks at site $i$ produced the fraction $r_i^k$ of that total.
+Therefore, $r_i^kD^{kl}r_j^l$ of data will be sent across link $(i,j)$ and take the time duration $r_i^k(D^{kl}/B_{ij}^{kl})r_j^l$ to transfer.
+This is exactly the same as relaxing the binary task placement decision variables \eqref{eq:opt_genDAG_placebin} in Problem \eqref{eq:opt_genDAG}.
