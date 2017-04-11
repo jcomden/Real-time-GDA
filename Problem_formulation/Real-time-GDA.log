@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.16 (MiKTeX 2.9) (preloaded format=pdflatex 2016.1.5)  10 APR 2017 16:23
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (MiKTeX 2.9) (preloaded format=pdflatex 2016.1.5)  11 APR 2017 13:09
 entering extended mode
 **Real-time-GDA.tex
 (Real-time-GDA.tex
@@ -1232,24 +1232,21 @@ LaTeX Font Info:    Font shape `OT1/LinuxBiolinumT-TLF/m/n' will be
 LaTeX Font Info:    Font shape `OT1/LinuxBiolinumT-TLF/m/it' will be
 (Font)              scaled to size 9.0pt on input line 7.
 LaTeX Font Info:    Font shape `OT1/LinuxLibertineT-TLF/sb/n' will be
-(Font)              scaled to size 9.0pt on input line 73.
+(Font)              scaled to size 9.0pt on input line 79.
 LaTeX Font Info:    Font shape `OT1/LinuxLibertineT-TLF/sb/n' will be
-(Font)              scaled to size 7.3pt on input line 73.
+(Font)              scaled to size 7.3pt on input line 79.
 LaTeX Font Info:    Font shape `OT1/LinuxLibertineT-TLF/sb/n' will be
-(Font)              scaled to size 5.5pt on input line 73.
-) (clarinet.tex [1.1{C:/Users/jcomden/AppData/Local/MiKTeX/2.9/pdftex/config/pd
-ftex.map}
+(Font)              scaled to size 5.5pt on input line 79.
+ [1.1{C:/Users/jcomden/AppData/Local/MiKTeX/2.9/pdftex/config/pdftex.map}
 
-]
-Underfull \vbox (badness 1365) has occurred while \output is active []
-
+]) (clarinet.tex
 LaTeX Font Info:    Font shape `OT1/LinuxLibertineT-TLF/m/it' will be
 (Font)              scaled to size 9.0pt on input line 67.
- [2.2])
-(MR-single-query.tex [3.3]
-Underfull \vbox (badness 4595) has occurred while \output is active []
+ [2.2]) (MR-single-query.tex
+Underfull \vbox (badness 2103) has occurred while \output is active []
 
- [4.4])
+ [3.3]
+[4.4])
 No file Real-time-GDA.bbl.
 (appendix.tex) [5.5
 
@@ -1264,13 +1261,13 @@ Package rerunfilecheck Info: File `Real-time-GDA.out' has not changed.
 Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 170.
  ) 
 Here is how much of TeX's memory you used:
- 18075 strings out of 493673
- 271940 string characters out of 3141525
- 387232 words of memory out of 3000000
- 20586 multiletter control sequences out of 15000+200000
- 116326 words of font info for 321 fonts, out of 3000000 for 9000
+ 18084 strings out of 493673
+ 272192 string characters out of 3141525
+ 388292 words of memory out of 3000000
+ 20587 multiletter control sequences out of 15000+200000
+ 116659 words of font info for 325 fonts, out of 3000000 for 9000
  1186 hyphenation exceptions out of 8191
- 60i,13n,94p,596b,518s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 60i,12n,94p,596b,522s stack positions out of 5000i,500n,10000p,200000b,50000s
 {C:/Program Files (x86)/MiKTeX 2.9/fonts/enc/dvips/newtx/libertinealt.enc}{C:
 /Program Files (x86)/MiKTeX 2.9/fonts/enc/dvips/libertine/lbtn_c6xmqr.enc}{C:/P
 rogram Files (x86)/MiKTeX 2.9/fonts/enc/dvips/libertine/lbtn_ehpgim.enc}{C:/Pro
@@ -1298,9 +1295,9 @@ ts/type1/public/txfonts/txsyc.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type
 1/public/newtx/txsys.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/
 newtx/zxlr.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/newtx/zxlr
 i.pfb>
-Output written on Real-time-GDA.pdf (5 pages, 739404 bytes).
+Output written on Real-time-GDA.pdf (5 pages, 740385 bytes).
 PDF statistics:
- 397 PDF objects out of 1000 (max. 8388607)
- 134 named destinations out of 1000 (max. 500000)
+ 401 PDF objects out of 1000 (max. 8388607)
+ 135 named destinations out of 1000 (max. 500000)
  46201 words of extra memory for PDF output out of 51595 (max. 10000000)
 
