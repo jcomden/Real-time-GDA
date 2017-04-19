@@ -96,3 +96,53 @@ This means that if stage $k$ precedes stage $l$ in the DAG, stage $l$'s reduce t
 Therefore, $r_i^kD^{kl}r_j^l$ of data will be sent across link $(i,j)$ and take the time duration $r_i^k(D^{kl}/B_{ij}^{kl})r_j^l$ to transfer.
 
 Replacing $x_i^k$ with $r_i^k$ and the MapReduce model in Problem \eqref{eq:opt_genDAG} is exactly the same as relaxing the binary task placement decision variables \eqref{eq:opt_genDAG_placebin}.
+
+\subsection{Decoupling the problem}
+
+
+The goal is to decouple the stage placement and scheduling problems so that there can be a metric from the optimal stage placement to help the scheduling problem.
+
+\subsubsection{Stage placement to minimize WAN usage}
+First we will simplify the WAN usage:
+\begin{align}
+	\sum_{(k,l)\in\mathcal{D}}\sum_{(i,j)\in\mathcal{L}}x_i^kD^{kl}x_j^l & = \sum_{(k,l)\in\mathcal{D}}D^{kl}\sum_{(i,j)\in\mathcal{L}}x_i^kx_j^l \nonumber\\
+	& = \sum_{(k,l)\in\mathcal{D}}D^{kl}\sum_{i\in\mathcal{S}}\sum_{j\in\mathcal{S}:j\neq i}x_i^kx_j^l \nonumber\\
+	& = \sum_{(k,l)\in\mathcal{D}}D^{kl}\left(\sum_{i\in\mathcal{S}}\sum_{j\in\mathcal{S}}x_i^kx_j^l-\sum_{i\in\mathcal{S}}x_i^kx_i^l\right) \nonumber\\
+	& = \sum_{(k,l)\in\mathcal{D}}D^{kl}\left(1-\sum_{i\in\mathcal{S}}x_i^kx_i^l\right)
+\end{align}
+which means that the aggregate WAN usage measurement only depends on the product of stage placement fractions on the same sites for consecutive stages.
+
+This gives the stage placement problem to be:
+\begin{subequations}
+	\begin{align}
+		\min_{\mathbf{x}} \quad & \sum_{(k,l)\in\mathcal{D}}D^{kl}\left(1-\sum_{i\in\mathcal{S}}x_i^kx_i^l\right) \\
+		\text{s.t.} \quad & \sum_{i\in\mathcal{S}}x_i^k = 1 \quad \forall k\in\mathcal{T} \\
+		& x_i^k \geq 0 \quad \forall i\in\mathcal{S},k\in\mathcal{T} \\
+		& x_i^k = 1 \quad \forall (k,i)\in\mathcal{R}
+	\end{align}
+\end{subequations}
+
+\subsubsection{Data transfer scheduling}
+
+Given the stage placements $\mathbf{x}$, we want to find the orderings $\mathbf{z}$ and start times $\mathbf{s}$ for the data transfers:
+\begin{subequations}
+	\begin{align}
+		\min_{(k,l)\in\mathcal{D}}\left\{\min_{(i,j)\in\mathcal{L}}\left\{s_{ij}^{kl}\right\}\right\} & \geq T_0 \\
+		\max_{(k,l)\in\mathcal{D}}\left\{\max_{(i,j)\in\mathcal{L}}\left\{s_{ij}^{kl}+x_{i}^k\dfrac{D^{kl}}{B_{ij}}x_{j}^l\right\}\right\} & \leq T_f
+	\end{align}
+	\begin{align}
+		\max_{k:(k,l)\in\mathcal{D}}\left\{\max_{(i,j)\in\mathcal{L}}\left\{s_{ij}^{kl}+x_{i}^k\dfrac{D^{kl}}{B_{ij}}x_{j}^l\right\}\right\} \leq \min_{(i,j)\in\mathcal{L}}\left\{s_{ij}^{lm}\right\} \nonumber \\
+		\forall(l,m)\in\mathcal{D}
+	\end{align}
+	\begin{align}
+		s_{ij}^{kl}+x_{i}^k\dfrac{D^{kl}}{B_{ij}}x_{j}^l \leq s_{ij}^{mn} + M(1-z_{ij}^{kl|mn}) \quad \nonumber \\
+		\quad\forall \{(k,l),(m,n)\} \in\mathcal{D}:(k,l)\neq(m,n), \forall(i,j)\in\mathcal{L}\\
+		z_{ij}^{kl|mn} + z_{ij}^{mn|kl} = 1 \quad \nonumber\\
+		\quad\forall \{(k,l),(m,n)\} \in\mathcal{D}:(k,l)\neq(m,n), \forall(i,j)\in\mathcal{L} \\
+		z_{ij}^{kl|mn} \in\{0,1\} \nonumber\\
+		\quad \forall \{(k,l),(m,n)\} \in\mathcal{D}:(k,l)\neq(m,n), \forall(i,j)\in\mathcal{L}
+	\end{align}
+\end{subequations}
+
+Since scheduling is a complex problem, we would like to start with a greedy scheduling method (e.g. SRPT).
+Our goal is to find $\mathbf{s}$ as a function of $\mathbf{z}$.
