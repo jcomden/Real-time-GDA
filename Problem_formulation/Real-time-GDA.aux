@@ -19,61 +19,48 @@
 \@writefile{toc}{\contentsline {section}{Abstract}{1}{section*.2}}
 \@writefile{toc}{\contentsline {section}{\numberline {1}Single DAG Query}{1}{section.1}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {1.1}Model}{1}{subsection.1.1}}
-\newlabel{eq:DAG_stage_start}{{1}{1}{Stage scheduling}{equation.1.1}{}}
-\newlabel{eq:DAG_deadline}{{2}{1}{Stage scheduling}{equation.1.2}{}}
-\newlabel{eq:DAG_data_trans_start}{{3}{1}{Stage scheduling}{equation.1.3}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {1.2}Problem}{1}{subsection.1.2}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {1.2.1}General DAG - Minimize WAN usage}{1}{subsubsection.1.2.1}}
-\newlabel{eq:opt_genDAG}{{4}{1}{General DAG - Minimize WAN usage}{equation.1.4}{}}
-\newlabel{eq:opt_genDAG_WAN}{{4a}{1}{General DAG - Minimize WAN usage}{equation.1.4a}{}}
-\newlabel{eq:opt_genDAG_place1}{{4b}{1}{General DAG - Minimize WAN usage}{equation.1.4b}{}}
-\newlabel{eq:opt_genDAG_placebin}{{4c}{1}{General DAG - Minimize WAN usage}{equation.1.4c}{}}
-\newlabel{eq:opt_genDAG_placeraw}{{4d}{1}{General DAG - Minimize WAN usage}{equation.1.4d}{}}
-\newlabel{eq:opt_genDAG_ordersbin}{{4e}{1}{General DAG - Minimize WAN usage}{equation.1.4e}{}}
-\newlabel{eq:opt_genDAG_schedule}{{4f}{1}{General DAG - Minimize WAN usage}{equation.1.4f}{}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {1.2.2}MapReduce Relaxation}{2}{subsubsection.1.2.2}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {1.3}Decoupling the problem}{2}{subsection.1.3}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {1.3.1}Stage placement to minimize WAN usage}{2}{subsubsection.1.3.1}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {1.3.2}Data transfer scheduling}{2}{subsubsection.1.3.2}}
-\@writefile{toc}{\contentsline {section}{\numberline {2}CLARINET}{2}{section.2}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {2.1}Given claims}{2}{subsection.2.1}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {2.2}Model}{3}{subsection.2.2}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {2.3}Single Query Problem}{3}{subsection.2.3}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {2.3.1}Task placement within a (Reduce) stage}{3}{subsubsection.2.3.1}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {2.3.2}Scheduling tasks in a DAG}{3}{subsubsection.2.3.2}}
-\newlabel{eq:DAG_ordered_uv}{{10}{3}{Scheduling tasks in a DAG}{equation.2.10}{}}
-\newlabel{eq:DAG_unordered_uv}{{11}{3}{Scheduling tasks in a DAG}{equation.2.11}{}}
-\newlabel{eq:DAG_opt_schedule}{{12}{3}{Scheduling tasks in a DAG}{equation.2.12}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {2.4}Multiple Query Problem}{3}{subsection.2.4}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {2.4.1}Handling previously scheduled queries}{4}{subsubsection.2.4.1}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {2.4.2}Handling resource fragmentation}{4}{subsubsection.2.4.2}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {2.4.3}Fairness}{4}{subsubsection.2.4.3}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {2.4.4}WAN utilization}{4}{subsubsection.2.4.4}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {2.4.5}Online Arrivals}{4}{subsubsection.2.4.5}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {2.5}Possible directions}{4}{subsection.2.5}}
-\@writefile{toc}{\contentsline {section}{\numberline {3}Single MapReduce Query}{4}{section.3}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.1}Model}{4}{subsection.3.1}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.2}Problem}{4}{subsection.3.2}}
-\newlabel{eq:opt_1Q_MR_WAN_deadline}{{21}{5}{Minimize WAN usage given a shuffle deadline}{equation.3.21}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.3}Optima}{5}{subsection.3.3}}
-\newlabel{eq:opt_1Q_MR_WAN_deadline_kkt}{{22}{5}{Optima}{equation.3.22}{}}
-\newlabel{eq:opt_1Q_MR_WAN_deadline_kkt_stat}{{22a}{5}{Optima}{equation.3.22a}{}}
-\newlabel{eq:opt_1Q_MR_WAN_deadline_kkt_cs1}{{22b}{5}{Optima}{equation.3.22b}{}}
-\newlabel{eq:opt_1Q_MR_WAN_deadline_kkt_cs2}{{22c}{5}{Optima}{equation.3.22c}{}}
-\newlabel{eq:opt_1Q_MR_WAN_deadline_kkt_dual1}{{22d}{5}{Optima}{equation.3.22d}{}}
-\newlabel{eq:opt_1Q_MR_WAN_deadline_kkt_dual2}{{22e}{5}{Optima}{equation.3.22e}{}}
-\newlabel{eq:opt_1Q_MR_WAN_deadline_kkt_prim1}{{22f}{5}{Optima}{equation.3.22f}{}}
-\newlabel{eq:opt_1Q_MR_WAN_deadline_kkt_prim2}{{22g}{5}{Optima}{equation.3.22g}{}}
-\newlabel{eq:opt_1Q_MR_WAN_deadline_kkt_prim3}{{22h}{5}{Optima}{equation.3.22h}{}}
-\newlabel{eq:opt_1Q_MR_WAN_deadline_kkt2}{{25}{5}{Optima}{equation.3.25}{}}
-\newlabel{eq:opt_1Q_MR_WAN_deadline_kkt2_stat}{{25a}{5}{Optima}{equation.3.25a}{}}
-\newlabel{eq:opt_1Q_MR_WAN_deadline_kkt2_cs1}{{25b}{5}{Optima}{equation.3.25b}{}}
-\newlabel{eq:opt_1Q_MR_WAN_deadline_kkt2_cs2}{{25c}{5}{Optima}{equation.3.25c}{}}
-\newlabel{eq:opt_1Q_MR_WAN_deadline_kkt2_dual1}{{25d}{5}{Optima}{equation.3.25d}{}}
-\newlabel{eq:opt_1Q_MR_WAN_deadline_kkt2_dual2}{{25e}{5}{Optima}{equation.3.25e}{}}
-\newlabel{eq:opt_1Q_MR_WAN_deadline_kkt2_prim1}{{25f}{5}{Optima}{equation.3.25f}{}}
-\newlabel{eq:opt_1Q_MR_WAN_deadline_kkt2_prim2}{{25g}{5}{Optima}{equation.3.25g}{}}
-\newlabel{eq:opt_1Q_MR_WAN_deadline_kkt2_prim3}{{25h}{5}{Optima}{equation.3.25h}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {1.2}Task Assignment Problem}{1}{subsection.1.2}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {1.3}Data Transfer Scheduling Problem}{1}{subsection.1.3}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {1.4}Jointly optimization}{1}{subsection.1.4}}
+\@writefile{toc}{\contentsline {section}{\numberline {2}CLARINET}{1}{section.2}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.1}Given claims}{1}{subsection.2.1}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.2}Model}{2}{subsection.2.2}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.3}Single Query Problem}{2}{subsection.2.3}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {2.3.1}Task placement within a (Reduce) stage}{2}{subsubsection.2.3.1}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {2.3.2}Scheduling tasks in a DAG}{2}{subsubsection.2.3.2}}
+\newlabel{eq:DAG_ordered_uv}{{3}{2}{Scheduling tasks in a DAG}{equation.2.3}{}}
+\newlabel{eq:DAG_unordered_uv}{{4}{2}{Scheduling tasks in a DAG}{equation.2.4}{}}
+\newlabel{eq:DAG_opt_schedule}{{5}{2}{Scheduling tasks in a DAG}{equation.2.5}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.4}Multiple Query Problem}{2}{subsection.2.4}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {2.4.1}Handling previously scheduled queries}{3}{subsubsection.2.4.1}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {2.4.2}Handling resource fragmentation}{3}{subsubsection.2.4.2}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {2.4.3}Fairness}{3}{subsubsection.2.4.3}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {2.4.4}WAN utilization}{3}{subsubsection.2.4.4}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {2.4.5}Online Arrivals}{3}{subsubsection.2.4.5}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.5}Possible directions}{3}{subsection.2.5}}
+\@writefile{toc}{\contentsline {section}{\numberline {3}Single MapReduce Query}{3}{section.3}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.1}Model}{3}{subsection.3.1}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.2}Problem}{3}{subsection.3.2}}
+\newlabel{eq:opt_1Q_MR_WAN_deadline}{{14}{4}{Minimize WAN usage given a shuffle deadline}{equation.3.14}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.3}Optima}{4}{subsection.3.3}}
+\newlabel{eq:opt_1Q_MR_WAN_deadline_kkt}{{15}{4}{Optima}{equation.3.15}{}}
+\newlabel{eq:opt_1Q_MR_WAN_deadline_kkt_stat}{{15a}{4}{Optima}{equation.3.15a}{}}
+\newlabel{eq:opt_1Q_MR_WAN_deadline_kkt_cs1}{{15b}{4}{Optima}{equation.3.15b}{}}
+\newlabel{eq:opt_1Q_MR_WAN_deadline_kkt_cs2}{{15c}{4}{Optima}{equation.3.15c}{}}
+\newlabel{eq:opt_1Q_MR_WAN_deadline_kkt_dual1}{{15d}{4}{Optima}{equation.3.15d}{}}
+\newlabel{eq:opt_1Q_MR_WAN_deadline_kkt_dual2}{{15e}{4}{Optima}{equation.3.15e}{}}
+\newlabel{eq:opt_1Q_MR_WAN_deadline_kkt_prim1}{{15f}{4}{Optima}{equation.3.15f}{}}
+\newlabel{eq:opt_1Q_MR_WAN_deadline_kkt_prim2}{{15g}{4}{Optima}{equation.3.15g}{}}
+\newlabel{eq:opt_1Q_MR_WAN_deadline_kkt_prim3}{{15h}{4}{Optima}{equation.3.15h}{}}
+\newlabel{eq:opt_1Q_MR_WAN_deadline_kkt2}{{18}{4}{Optima}{equation.3.18}{}}
+\newlabel{eq:opt_1Q_MR_WAN_deadline_kkt2_stat}{{18a}{4}{Optima}{equation.3.18a}{}}
+\newlabel{eq:opt_1Q_MR_WAN_deadline_kkt2_cs1}{{18b}{4}{Optima}{equation.3.18b}{}}
+\newlabel{eq:opt_1Q_MR_WAN_deadline_kkt2_cs2}{{18c}{4}{Optima}{equation.3.18c}{}}
+\newlabel{eq:opt_1Q_MR_WAN_deadline_kkt2_dual1}{{18d}{4}{Optima}{equation.3.18d}{}}
+\newlabel{eq:opt_1Q_MR_WAN_deadline_kkt2_dual2}{{18e}{4}{Optima}{equation.3.18e}{}}
+\newlabel{eq:opt_1Q_MR_WAN_deadline_kkt2_prim1}{{18f}{4}{Optima}{equation.3.18f}{}}
+\newlabel{eq:opt_1Q_MR_WAN_deadline_kkt2_prim2}{{18g}{4}{Optima}{equation.3.18g}{}}
+\newlabel{eq:opt_1Q_MR_WAN_deadline_kkt2_prim3}{{18h}{4}{Optima}{equation.3.18h}{}}
 \bibstyle{ACM-Reference-Format}
 \bibdata{reference}
 \newlabel{tocindent-1}{0pt}
@@ -81,5 +68,5 @@
 \newlabel{tocindent1}{0pt}
 \newlabel{tocindent2}{0pt}
 \newlabel{tocindent3}{0pt}
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.4}Algorithm}{6}{subsection.3.4}}
-\newlabel{TotPages}{{6}{6}{}{page.6}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.4}Algorithm}{5}{subsection.3.4}}
+\newlabel{TotPages}{{5}{5}{}{page.5}{}}
