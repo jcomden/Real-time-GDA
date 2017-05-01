@@ -16,6 +16,7 @@
 \gdef\HyperFirstAtBeginDocument#1{#1}
 \providecommand\HyField@AuxAddToFields[1]{}
 \providecommand\HyField@AuxAddToCoFields[2]{}
+\citation{gounaris2008convexity}
 \@writefile{toc}{\contentsline {section}{Abstract}{1}{section*.2}}
 \@writefile{toc}{\contentsline {section}{\numberline {1}Single DAG Query}{1}{section.1}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {1.1}Model}{1}{subsection.1.1}}
@@ -25,15 +26,21 @@
 \newlabel{eq:opt_task-duration}{{1a}{1}{Problem Statement}{equation.1.1a}{}}
 \newlabel{eq:opt_task-sum1}{{1b}{1}{Problem Statement}{equation.1.1b}{}}
 \newlabel{eq:opt_task-nonneg}{{1c}{1}{Problem Statement}{equation.1.1c}{}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {1.2.2}Characterizing the optima}{1}{subsubsection.1.2.2}}
-\newlabel{eq:cond_stat}{{2}{1}{Characterizing the optima}{equation.1.2}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {1.2.2}Necessary Feasibility Conditions}{1}{subsubsection.1.2.2}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {1.2.3}Sufficient Feasibility Conditions}{1}{subsubsection.1.2.3}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {1.2.4}Convexifying the problem}{1}{subsubsection.1.2.4}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {1.2.5}Characterizing the optima \textup  {\hbox {\mathsurround \z@ \normalfont  (\ignorespaces \ref  {eq:opt_task}\unskip \@@italiccorr )}} directly}{1}{subsubsection.1.2.5}}
 \citation{bertsekas1999nonlinear}
-\newlabel{eq:cond_dual}{{3}{2}{Characterizing the optima}{equation.1.3}{}}
-\newlabel{eq:cond_dual_lambda}{{3a}{2}{Characterizing the optima}{equation.1.3a}{}}
-\newlabel{eq:cond_dual_phi}{{3b}{2}{Characterizing the optima}{equation.1.3b}{}}
-\newlabel{eq:cond_cs}{{4}{2}{Characterizing the optima}{equation.1.4}{}}
-\newlabel{eq:cond_cs_duration}{{4a}{2}{Characterizing the optima}{equation.1.4a}{}}
-\newlabel{eq:cond_cs_nonneg}{{4b}{2}{Characterizing the optima}{equation.1.4b}{}}
+\citation{viswanathan2016clarinet}
+\newlabel{eq:cond_stat}{{3}{2}{Characterizing the optima \eqref {eq:opt_task} directly}{equation.1.3}{}}
+\newlabel{eq:cond_dual}{{4}{2}{Characterizing the optima \eqref {eq:opt_task} directly}{equation.1.4}{}}
+\newlabel{eq:cond_dual_lambda}{{4a}{2}{Characterizing the optima \eqref {eq:opt_task} directly}{equation.1.4a}{}}
+\newlabel{eq:cond_dual_phi}{{4b}{2}{Characterizing the optima \eqref {eq:opt_task} directly}{equation.1.4b}{}}
+\newlabel{eq:cond_cs}{{5}{2}{Characterizing the optima \eqref {eq:opt_task} directly}{equation.1.5}{}}
+\newlabel{eq:cond_cs_duration}{{5a}{2}{Characterizing the optima \eqref {eq:opt_task} directly}{equation.1.5a}{}}
+\newlabel{eq:cond_cs_nonneg}{{5b}{2}{Characterizing the optima \eqref {eq:opt_task} directly}{equation.1.5b}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {1.2.6}Optimality conditions if predecessor and successor stages are pre-assigned}{2}{subsubsection.1.2.6}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {1.2.7}Take advantage of sparcity}{2}{subsubsection.1.2.7}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {1.3}Data Transfer Scheduling Problem}{2}{subsection.1.3}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {1.4}Jointly optimization}{2}{subsection.1.4}}
 \@writefile{toc}{\contentsline {section}{\numberline {2}CLARINET}{2}{section.2}}
@@ -42,23 +49,49 @@
 \@writefile{toc}{\contentsline {subsection}{\numberline {2.3}Single Query Problem}{3}{subsection.2.3}}
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {2.3.1}Task placement within a (Reduce) stage}{3}{subsubsection.2.3.1}}
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {2.3.2}Scheduling tasks in a DAG}{3}{subsubsection.2.3.2}}
-\newlabel{eq:DAG_ordered_uv}{{8}{3}{Scheduling tasks in a DAG}{equation.2.8}{}}
-\newlabel{eq:DAG_unordered_uv}{{9}{3}{Scheduling tasks in a DAG}{equation.2.9}{}}
-\newlabel{eq:DAG_opt_schedule}{{10}{3}{Scheduling tasks in a DAG}{equation.2.10}{}}
+\newlabel{eq:DAG_ordered_uv}{{9}{3}{Scheduling tasks in a DAG}{equation.2.9}{}}
+\newlabel{eq:DAG_unordered_uv}{{10}{3}{Scheduling tasks in a DAG}{equation.2.10}{}}
+\newlabel{eq:DAG_opt_schedule}{{11}{3}{Scheduling tasks in a DAG}{equation.2.11}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {2.4}Multiple Query Problem}{3}{subsection.2.4}}
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {2.4.1}Handling previously scheduled queries}{3}{subsubsection.2.4.1}}
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {2.4.2}Handling resource fragmentation}{3}{subsubsection.2.4.2}}
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {2.4.3}Fairness}{3}{subsubsection.2.4.3}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {2.4.4}WAN utilization}{4}{subsubsection.2.4.4}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {2.4.5}Online Arrivals}{4}{subsubsection.2.4.5}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.5}Possible directions}{4}{subsection.2.5}}
+\@writefile{toc}{\contentsline {section}{\numberline {3}Single MapReduce Query}{4}{section.3}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.1}Model}{4}{subsection.3.1}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.2}Problem}{4}{subsection.3.2}}
+\newlabel{eq:opt_1Q_MR_WAN_deadline}{{20}{4}{Minimize WAN usage given a shuffle deadline}{equation.3.20}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.3}Optima}{4}{subsection.3.3}}
+\newlabel{eq:opt_1Q_MR_WAN_deadline_kkt}{{21}{4}{Optima}{equation.3.21}{}}
+\newlabel{eq:opt_1Q_MR_WAN_deadline_kkt_stat}{{21a}{4}{Optima}{equation.3.21a}{}}
+\newlabel{eq:opt_1Q_MR_WAN_deadline_kkt_cs1}{{21b}{4}{Optima}{equation.3.21b}{}}
+\newlabel{eq:opt_1Q_MR_WAN_deadline_kkt_cs2}{{21c}{4}{Optima}{equation.3.21c}{}}
+\newlabel{eq:opt_1Q_MR_WAN_deadline_kkt_dual1}{{21d}{4}{Optima}{equation.3.21d}{}}
+\newlabel{eq:opt_1Q_MR_WAN_deadline_kkt_dual2}{{21e}{4}{Optima}{equation.3.21e}{}}
+\newlabel{eq:opt_1Q_MR_WAN_deadline_kkt_prim1}{{21f}{4}{Optima}{equation.3.21f}{}}
+\newlabel{eq:opt_1Q_MR_WAN_deadline_kkt_prim2}{{21g}{4}{Optima}{equation.3.21g}{}}
+\newlabel{eq:opt_1Q_MR_WAN_deadline_kkt_prim3}{{21h}{4}{Optima}{equation.3.21h}{}}
 \bibstyle{ACM-Reference-Format}
 \bibdata{reference}
 \bibcite{bertsekas1999nonlinear}{{1}{1999}{{Bertsekas}}{{Bertsekas}}}
+\bibcite{gounaris2008convexity}{{2}{2008}{{Gounaris and Floudas}}{{Gounaris and Floudas}}}
+\bibcite{viswanathan2016clarinet}{{3}{2016}{{Viswanathan et~al\unhbox \voidb@x \hbox {.}}}{{Viswanathan, Ananthanarayanan, and Akella}}}
 \newlabel{tocindent-1}{0pt}
 \newlabel{tocindent0}{0pt}
 \newlabel{tocindent1}{0pt}
 \newlabel{tocindent2}{0pt}
 \newlabel{tocindent3}{0pt}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {2.4.4}WAN utilization}{4}{subsubsection.2.4.4}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {2.4.5}Online Arrivals}{4}{subsubsection.2.4.5}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {2.5}Possible directions}{4}{subsection.2.5}}
-\@writefile{toc}{\contentsline {section}{References}{4}{section*.6}}
-\newlabel{TotPages}{{4}{4}{}{page.4}{}}
+\newlabel{eq:opt_1Q_MR_WAN_deadline_kkt2}{{24}{5}{Optima}{equation.3.24}{}}
+\newlabel{eq:opt_1Q_MR_WAN_deadline_kkt2_stat}{{24a}{5}{Optima}{equation.3.24a}{}}
+\newlabel{eq:opt_1Q_MR_WAN_deadline_kkt2_cs1}{{24b}{5}{Optima}{equation.3.24b}{}}
+\newlabel{eq:opt_1Q_MR_WAN_deadline_kkt2_cs2}{{24c}{5}{Optima}{equation.3.24c}{}}
+\newlabel{eq:opt_1Q_MR_WAN_deadline_kkt2_dual1}{{24d}{5}{Optima}{equation.3.24d}{}}
+\newlabel{eq:opt_1Q_MR_WAN_deadline_kkt2_dual2}{{24e}{5}{Optima}{equation.3.24e}{}}
+\newlabel{eq:opt_1Q_MR_WAN_deadline_kkt2_prim1}{{24f}{5}{Optima}{equation.3.24f}{}}
+\newlabel{eq:opt_1Q_MR_WAN_deadline_kkt2_prim2}{{24g}{5}{Optima}{equation.3.24g}{}}
+\newlabel{eq:opt_1Q_MR_WAN_deadline_kkt2_prim3}{{24h}{5}{Optima}{equation.3.24h}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.4}Algorithm}{5}{subsection.3.4}}
+\@writefile{toc}{\contentsline {section}{References}{5}{section*.9}}
+\newlabel{TotPages}{{5}{5}{}{page.5}{}}

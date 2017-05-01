@@ -1,0 +1,146 @@
+\section{Single DAG Query}
+
+\subsection{Model}
+
+\subsubsection*{Wide Area Network}
+
+Let $\mathcal{S}$ be the set of sites that hold data and run tasks, and $\mathcal{L}$ be the set of directed edges that represent inter-site links.
+For each inter-site WAN link $(i,j)\in\mathcal{L}$, let $B_{ij}$ be the bandwidth and $C_{ij}$ be the cost to transfer one unit of data from site $i$ to site $j$.
+\begin{assumption}
+	The bandwidths are stable within the time frame of real-time data analytics.
+\end{assumption} 
+
+For the analysis we make the following assumption:
+\begin{assumption}
+	Data transfers on a particular link are non-overlapping.
+	\todo{Show that this assumption does not add suboptimality to our objective, i.e., any overlapping schedule can be transformed into a non-overlapping schedule without any loss to the optimal value.}
+\end{assumption}
+
+\subsubsection*{DAG of tasks}
+
+We define a stage in the DAG as a group of tasks that have the same input data dependencies.
+Let $\mathcal{T}$ be the set of stages and $\mathcal{D}$ be the directed set of edges that represent stage dependencies for the DAG, respectively.
+Some of the stages do not have any incoming edges and so represent the raw input data.
+Let $\mathcal{R}\subset\mathcal{T}$ be the set of stages for the raw input data.
+Each stage dependency $(k,l)\in\mathcal{D}$ also has a corresponding amount of data $D^{kl}$ that must be transfered from stage $k$ to stage $l$.
+
+\begin{assumption}
+	A stage must have completely received all of its input data before it can process and start transferring data to another stage.
+\end{assumption}
+
+The DAG also has a start time $T_0$ and a finish time $T_f$ for which the schedule of data transfers must respect.
+
+\subsection{Task Assignment Problem}
+
+\subsubsection{Problem Statement}
+
+We model each stage as a distributable group of tasks that may be fractionally assigned to multiple sites.
+The fraction of tasks from stage $k$ placed at site $i$ is represented by the nonnegative decision variable $x_i^k$ and proportionally determines the size of data transfers.
+This means that for any directed edge $(k,l)\in\mathcal{D}$, then $x_i^kD^{kl}x_j^l$ of data will be transfered across link $(i,j)\in\mathcal{L}$.
+Note that the set of stages $\mathcal{R}$ which represent the raw data have a decision variable which is preset according to its site-wise distribution.
+
+We can represent the duration of a data transfer by $x_i^k(D^{kl}/B_{ij})x_j^l$.
+Each data transfer is given an upper bound on its total link duration $d_{ij}^{kl}$.
+This allows data transfers to be more generally scheduled and not need to be uninterruptible.
+This is so that they can be scheduled by any general scheduling algorithm (e.g. SRPT).
+
+The goal of the task assignment problem is to fractionally distribute the stages of tasks to minimize the WAN usage for a given set of link duration upper bounds:
+
+\begin{subequations}\label{eq:opt_task}
+	\begin{align}
+		\min_{\mathbf{x}} \quad & \sum_{(k,l)\in\mathcal{D}}\sum_{(i,j)\in\mathcal{L}}C_{ij}D^{kl}x_i^kx_j^l \nonumber \\
+		\text{s.t.}\quad & x_i^k(D^{kl}/B_{ij})x_j^l \leq d_{ij}^{kl} \quad \forall(i,j)\in\mathcal{L}, \forall(k,l)\in\mathcal{D} \label{eq:opt_task-duration} \\
+		& \sum_{i\in\mathcal{S}}x_i^k = 1 \quad \forall k\in\mathcal{T} \label{eq:opt_task-sum1} \\
+		& x_i^k \geq 0 \quad \forall i\in\mathcal{S},k\in\mathcal{T} \label{eq:opt_task-nonneg}
+	\end{align}
+\end{subequations}
+
+\subsubsection{Characterizing the optima}
+Although Problem \eqref{eq:opt_task} is not convex, we can still find properties of the optimal solution.
+
+By taking the Lagrange dual and the dual variables $(\boldsymbol{\lambda},\boldsymbol{\mu},\boldsymbol{\phi})$ corresponding with the respective constraints, we have the following first-order necessary stationary conditions for optimality:
+\begin{align}
+	\sum_{k:(k,l)\in\mathcal{D}}\sum_{i:(i,j)\in\mathcal{L}}C_{ij}D^{kl}x_i^k + \sum_{k:(l,k)\in\mathcal{D}}\sum_{i:(j,i)\in\mathcal{L}}C_{ji}D^{lk}x_i^k \nonumber \\
+	+ \sum_{k:(k,l)\in\mathcal{D}}\sum_{i:(i,j)\in\mathcal{L}}\lambda_{ij}^{kl}(D^{kl}/B_{ij})x_i^k + \sum_{k:(l,k)\in\mathcal{D}}\sum_{i:(j,i)\in\mathcal{L}}\lambda_{ji}^{lk}(D^{lk}/B_{ji})x_i^k \nonumber \\
+	- \mu^l - \phi_j^l = 0
+	\quad \forall j\in\mathcal{S},\forall l\in\mathcal{T} \nonumber
+\end{align}
+Combine the 1st and 3rd summations, combine the 2nd and 4th summations:
+\begin{align}
+	\sum_{k:(k,l)\in\mathcal{D}}\sum_{i:(i,j)\in\mathcal{L}} D^{kl}(C_{ij} + \lambda_{ij}^{kl}(1/B_{ij}))x_i^k \nonumber \\
+	+ \sum_{k:(l,k)\in\mathcal{D}}\sum_{i:(j,i)\in\mathcal{L}} D^{lk}(C_{ji} + \lambda_{ji}^{lk}(1/B_{ji}))x_i^k \nonumber \\
+	- \mu^l - \phi_j^l = 0
+	\quad \forall j\in\mathcal{S},\forall l\in\mathcal{T} \nonumber
+\end{align}
+Relabel the index in the 2nd summation of the second summation set, and flip the summation order:
+\begin{align}
+	\sum_{i:(i,j)\in\mathcal{L}} \sum_{k:(k,l)\in\mathcal{D}} D^{kl}(C_{ij} + \lambda_{ij}^{kl}(1/B_{ij}))x_i^k \nonumber \\
+	+ \sum_{i:(j,i)\in\mathcal{L}}\sum_{m:(l,m)\in\mathcal{D}} D^{lm}(C_{ji} + \lambda_{ji}^{lm}(1/B_{ji}))x_i^m \nonumber \\
+	- \mu^l - \phi_j^l = 0
+	\quad \forall j\in\mathcal{S},\forall l\in\mathcal{T} \nonumber
+\end{align}
+Since we assume a complete bidirectional WAN network we have $\{i:(i,j)\in\mathcal{L}\} \equiv \{i:(j,i)\in\mathcal{L}\} \equiv \{i:i\in\mathcal{S}\setminus j\}$ and so can combine the outer summations:
+\begin{align}\label{eq:cond_stat}
+	\sum_{i\in\mathcal{S}\setminus j} \sum_{k:(k,l)\in\mathcal{D}} D^{kl}(C_{ij} + \lambda_{ij}^{kl}(1/B_{ij}))x_i^k \nonumber \\
+	+ \sum_{i\in\mathcal{S}\setminus j}\sum_{m:(l,m)\in\mathcal{D}} D^{lm}(C_{ji} + \lambda_{ji}^{lm}(1/B_{ji}))x_i^m \nonumber \\
+	= \mu^l + \phi_j^l
+	\quad \forall j\in\mathcal{S},\forall l\in\mathcal{T}
+\end{align}
+
+The dual feasibility constraints give us:
+\begin{subequations}\label{eq:cond_dual}
+	\begin{align}
+		\lambda_{ij}^{kl} \geq 0 & \quad \forall(i,j)\in\mathcal{L}, \forall(k,l)\in\mathcal{D} \label{eq:cond_dual_lambda} \\
+		\phi_j^l \geq 0 & \quad \forall j\in\mathcal{S},\forall l\in\mathcal{T} \label{eq:cond_dual_phi}
+	\end{align}
+\end{subequations}
+
+The complementary slackness constraints for the inequalities give us:
+\begin{subequations}\label{eq:cond_cs}
+	\begin{align}
+		\lambda_{ij}^{kl}\left(x_i^k(D^{kl}/B_{ij})x_j^l - d_{ij}^{kl}\right) = 0 & \quad \forall(i,j)\in\mathcal{L}, \forall(k,l)\in\mathcal{D} \label{eq:cond_cs_duration} \\
+		\phi_j^lx_j^l = 0 & \quad \forall j\in\mathcal{S},\forall l\in\mathcal{T} \label{eq:cond_cs_nonneg}
+	\end{align}
+\end{subequations}
+
+Therefore the necessary conditions for optimality are \eqref{eq:opt_task-duration} \eqref{eq:opt_task-sum1} \eqref{eq:opt_task-nonneg} \eqref{eq:cond_stat} \eqref{eq:cond_dual} \eqref{eq:cond_cs}.
+
+Inferences from the conditions
+\begin{enumerate}
+	\item At the optimal solution, the dual variables $\boldsymbol{\lambda}$ correspond with the negative gradient of the objective function w.r.t. the alloted durations $\mathbf{d}$. (See \cite{bertsekas1999nonlinear} Proposition 3.3.3)
+	%\item $\mu^l\geq 0:\forall l\in\mathcal{T}$.  Since all the input parameters, $\lambda_{ij}^{kl}$ \eqref{eq:cond_dual_lambda}, and $\phi_j^l$ \eqref{eq:opt_task-nonneg} are nonnegative, then LHS of \eqref{eq:cond_stat} is nonnegative.
+	%Suppose $\mu^l<0$, then $\phi^l_j>0:\forall j\in\mathcal{S}$ since LHS of \eqref{eq:cond_stat} is nonnegative.  From \eqref{eq:cond_cs_nonneg}, then $x_j^l=0:\forall j\in\mathcal{S}$. This contradicts \eqref{eq:opt_task-sum1}.
+	\item At the optimal solution, $\mu^l$ is the total WAN cost plus the product of dual prices and alloted durations for all incoming and outgoing data transfers associated with stage $l$.
+	Also each fraction of stage $l$ at site $j$ must share that same fraction of that stage's total cost. 
+	Multiply \eqref{eq:cond_stat} by $x_j^l$ and substitute with \eqref{eq:cond_cs}:
+	\begin{align}
+		\sum_{i\in\mathcal{S}\setminus j} \sum_{k:(k,l)\in\mathcal{D}} (C_{ij}D^{kl}x_i^kx_j^l + \lambda_{ij}^{kl}d_{ij}^{kl}) \nonumber \\
+		+ \sum_{i\in\mathcal{S}\setminus j}\sum_{m:(l,m)\in\mathcal{D}} (C_{ji}D^{lm}x_j^lx_i^m + \lambda_{ji}^{lm}d_{ji}^{lm}) \nonumber \\
+		= x_j^l\mu^l
+		\quad \forall j\in\mathcal{S},\forall l\in\mathcal{T}
+	\end{align}
+	Then sum for all $j\in\mathcal{S}$:
+	\begin{align}
+		\sum_{j\in\mathcal{S}}\sum_{i\in\mathcal{S}\setminus j} \sum_{k:(k,l)\in\mathcal{D}} (C_{ij}D^{kl}x_i^kx_j^l + \lambda_{ij}^{kl}d_{ij}^{kl}) \nonumber \\
+		+ \sum_{j\in\mathcal{S}}\sum_{i\in\mathcal{S}\setminus j}\sum_{m:(l,m)\in\mathcal{D}} (C_{ji}D^{lm}x_j^lx_i^m + \lambda_{ji}^{lm}d_{ji}^{lm}) \nonumber \\
+		= \sum_{j\in\mathcal{S}}x_j^l\mu^l
+		\quad \forall l\in\mathcal{T} \nonumber
+	\end{align}
+	Apply \eqref{eq:opt_task-sum1} to the RHS:
+	\begin{align}
+		\sum_{j\in\mathcal{S}}\sum_{i\in\mathcal{S}\setminus j} \sum_{k:(k,l)\in\mathcal{D}} (C_{ij}D^{kl}x_i^kx_j^l + \lambda_{ij}^{kl}d_{ij}^{kl}) \nonumber \\
+		+ \sum_{j\in\mathcal{S}}\sum_{i\in\mathcal{S}\setminus j}\sum_{m:(l,m)\in\mathcal{D}} (C_{ji}D^{lm}x_j^lx_i^m + \lambda_{ji}^{lm}d_{ji}^{lm}) \nonumber \\
+		= \mu^l
+		\quad \forall \forall l\in\mathcal{T}
+	\end{align}
+\end{enumerate}
+
+\subsection{Data Transfer Scheduling Problem}
+
+Because of the dependencies specified by the DAG, each data transfer duration link allocation $d_{ij}^{kl}$ must be scheduled after the deadline of stage $k$ denoted $t^k$ and before the deadline of stage $l$ denoted $t^l$.
+Therefore the goal is to find a scheduling policy $\pi$ and stage deadlines $\mathbf{t}$ such that the query start time $T_0$ and deadline $T_f$ are satisfied for the given set of durations $\mathbf{d}$ and stage dependencies $\mathcal{D}$.
+
+\subsection{Jointly optimization}
+
+Both the Task Assignment and Data Transfer Scheduling problems are connected through the data transfer duration link allocations $\mathbf{d}$.
+Therefore the joint optimization problem becomes if we can find a feasible schedule that minimizes the WAN usage cost by adjusting $\mathbf{d}$.

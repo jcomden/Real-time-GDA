@@ -47,4 +47,30 @@
 \newblock
 
 
+\bibitem[\protect\citeauthoryear{Gounaris and Floudas}{Gounaris and
+  Floudas}{2008}]%
+        {gounaris2008convexity}
+\bibfield{author}{\bibinfo{person}{CE Gounaris} {and} \bibinfo{person}{CA
+  Floudas}.} \bibinfo{year}{2008}\natexlab{}.
+\newblock \showarticletitle{Convexity of products of univariate functions and
+  convexification transformations for geometric programming}.
+\newblock \bibinfo{journal}{{\em Journal of Optimization Theory and
+  Applications\/}} \bibinfo{volume}{138}, \bibinfo{number}{3}
+  (\bibinfo{year}{2008}), \bibinfo{pages}{407--427}.
+\newblock
+
+
+\bibitem[\protect\citeauthoryear{Viswanathan, Ananthanarayanan, and
+  Akella}{Viswanathan et~al\mbox{.}}{2016}]%
+        {viswanathan2016clarinet}
+\bibfield{author}{\bibinfo{person}{Raajay Viswanathan}, \bibinfo{person}{Ganesh
+  Ananthanarayanan}, {and} \bibinfo{person}{Aditya Akella}.}
+  \bibinfo{year}{2016}\natexlab{}.
+\newblock \showarticletitle{Clarinet: Wan-aware optimization for analytics
+  queries}. In \bibinfo{booktitle}{{\em 12th USENIX Symposium on Operating
+  Systems Design and Implementation (OSDI 16)}}. USENIX Association,
+  \bibinfo{pages}{435--450}.
+\newblock
+
+
 \end{thebibliography}
