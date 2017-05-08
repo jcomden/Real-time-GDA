@@ -62,9 +62,33 @@ Since the sum of the $x$'s are 1 we have:
 
 \subsubsection{Sufficient Feasibility Conditions} \todo{}
 
-\subsubsection{Convexifying the problem} The paper \cite{gounaris2008convexity} gives necessary and sufficient properties of functions that can be used to replace the product $x_i^kx_j^l$.
+\subsubsection{Convexifying the problem}
+
+We are interested in convexifying the function $x_i^kx_j^l$.
+
+When there are not linear equalities, then paper \cite{gounaris2008convexity} gives necessary and sufficient properties of functions that can be used to replace the product $x_i^kx_j^l$.
 The idea is to replace $x_i^k$ with $f_1(y_1)$ and $x_j^l$ with $f_2(y_2)$ so that $F(y_1,y_2):=f_1(y_1)f_2(y_2)$ is jointly convex in $y_1$ and $y_2$.
 The properties they give imply that both $f_1(y_1)$ and $f_2(y_2)$ need to be strictly convex which works well for the objective function of \eqref{eq:opt_task} and \eqref{eq:opt_task-duration} but not for \eqref{eq:opt_task-sum1} when it becomes the summation of strictly convex functions.
+
+However when there are linear equalities that we want to keep, \cite{porn2008global} uses $x_i^k:= f_i^k(y_i^k) = e^{y_i^k}-\tau$ and then turns $x_i^kx_j^l$ into $e^{y_i^k+y_j^l}-\tau(y_i^k+y_j^l)+\tau^2$.
+The caveat is that we now have the equalities $y_i^k=\ln (x_i^k+\tau)$ which are concave and not linear.
+The paper uses a piecewise linear function to under-estimate the equalities.
+They run it on a convex optimization solver and update the piecewise linear grid based on the previous iteration's solution.
+This will numerically converge to the global optimal.
+
+\subsubsection{A convex lower bound on $x_i^kx_j^l$} and is tight if the decision variables $x_i^k$ are binary:
+\begin{align}
+	x_i^kx_j^l \geq \max\{0,x_i^k+x_j^l-1\} \quad \forall x_i^k\in[0,1],x_j^l\in[0,1]
+\end{align}
+\begin{align}
+	x_i^kx_j^l = \max\{0,x_i^k+x_j^l-1\} \quad \forall x_i^k\in\{0,1\},x_j^l\in\{0,1\}
+\end{align}
+
+\subsubsection{A convex upper bound on $x_i^kx_j^l$}
+\begin{align}
+	x_i^kx_j^l \leq \max\{(x_i^k)^2,(x_j^l)^2\}=(\max\{x_i^k,x_j^l\})^2 \quad \forall x_i^k\in[0,1],x_j^l\in[0,1]
+\end{align}
+
 
 \subsubsection{Characterizing the optima \eqref{eq:opt_task} directly}
 Although Problem \eqref{eq:opt_task} is not convex, we can still find properties of the optimal solution.

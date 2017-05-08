@@ -60,16 +60,16 @@
 \newblock
 
 
-\bibitem[\protect\citeauthoryear{Viswanathan, Ananthanarayanan, and
-  Akella}{Viswanathan et~al\mbox{.}}{2016}]%
-        {viswanathan2016clarinet}
-\bibfield{author}{\bibinfo{person}{Raajay Viswanathan}, \bibinfo{person}{Ganesh
-  Ananthanarayanan}, {and} \bibinfo{person}{Aditya Akella}.}
-  \bibinfo{year}{2016}\natexlab{}.
-\newblock \showarticletitle{Clarinet: Wan-aware optimization for analytics
-  queries}. In \bibinfo{booktitle}{{\em 12th USENIX Symposium on Operating
-  Systems Design and Implementation (OSDI 16)}}. USENIX Association,
-  \bibinfo{pages}{435--450}.
+\bibitem[\protect\citeauthoryear{P{\"o}Rn, Bj{\"o}Rk, and Westerlund}{P{\"o}Rn
+  et~al\mbox{.}}{2008}]%
+        {porn2008global}
+\bibfield{author}{\bibinfo{person}{Ray P{\"o}Rn}, \bibinfo{person}{Kaj-Mikael
+  Bj{\"o}Rk}, {and} \bibinfo{person}{Tapio Westerlund}.}
+  \bibinfo{year}{2008}\natexlab{}.
+\newblock \showarticletitle{Global solution of optimization problems with
+  signomial parts}.
+\newblock \bibinfo{journal}{{\em Discrete optimization\/}} \bibinfo{volume}{5},
+  \bibinfo{number}{1} (\bibinfo{year}{2008}), \bibinfo{pages}{108--120}.
 \newblock
 
 
