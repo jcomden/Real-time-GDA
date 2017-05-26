@@ -2,7 +2,7 @@
 
 \subsection{Model}
 
-\subsubsection{Wide Area Network}
+\subsubsection*{Wide Area Network}
 
 Let $\mathcal{S}$ be the set of sites that hold data and run tasks, and $\mathcal{L}$ be the set of directed edges that represent inter-site links.
 For each inter-site WAN link $(i,j)\in\mathcal{L}$, let $B_{ij}$ be the bandwidth and $C_{ij}$ be the cost to transfer one unit of data from site $i$ to site $j$.
@@ -16,59 +16,19 @@ For the analysis we make the following assumption:
 	\todo{Show that this assumption does not add suboptimality to our objective, i.e., any overlapping schedule can be transformed into a non-overlapping schedule without any loss to the optimal value.}
 \end{assumption}
 
-\begin{assumption}
-	Data transfers on a particular link are non-interruptible.
-	\todo{Show that this assumption does not add suboptimality to our objective, i.e., any schedule with interruptions can be transformed into a non-interruptible schedule without any loss to the optimal value.}
-\end{assumption}
-
-\subsubsection{DAG of tasks}
+\subsubsection*{DAG of tasks}
 
 We define a stage in the DAG as a group of tasks that have the same input data dependencies.
 Let $\mathcal{T}$ be the set of stages and $\mathcal{D}$ be the directed set of edges that represent stage dependencies for the DAG, respectively.
-Some of the stages do not have any incoming edges and so represent the locations of the raw input data.
+Some of the stages do not have any incoming edges and so represent the raw input data.
 Let $\mathcal{R}\subset\mathcal{T}$ be the set of stages for the raw input data.
-The final stage in the DAG does not have any outgoing edges and so represent the final destination of the query's response denoted by $F\in\mathcal{T}$.
 Each stage dependency $(k,l)\in\mathcal{D}$ also has a corresponding amount of data $D^{kl}$ that must be transfered from stage $k$ to stage $l$.
-
-%We separate the DAG into a set $\mathcal{P}$ of disjoint paths $\mathcal{D}_m:m\in\mathcal{P}$ so that the union of paths make up the whole DAG.
-%We also give an ordering (given by the index values) for the paths so that a path that precedes another path in the ordering gets precedence when there are link contentions.
-%To make sure that the path ordering does not hold up the whole query execution, this ordering should lexicographically respect each path's stage ordering as given in the DAG starting from the end; meaning that a path with a final stage that comes later in all topological orderings of the DAG should be ordered before a path whose final stage comes sooner.
-%If an ordering cannot be decided by the final stages, then compare the second to last stages and so on.
 
 \begin{assumption}
 	A stage must have completely received all of its input data before it can process and start transferring data to another stage.
 \end{assumption}
 
 The DAG also has a start time $T_0$ and a finish time $T_f$ for which the schedule of data transfers must respect.
-
-\subsubsection{Stage assignment decisions}
-We model each stage as a group of tasks that must be scheduled to run together at the same site.
-The decision of stage $k$ to be placed at site $i$ is represented by the binary decision variable $x_i^k\in\{0,1\}$.
-This means that for any directed edge $(k,l)\in\mathcal{D}$, then $D^{kl}x_i^kx_j^l$ of data will be transfered across link $(i,j)\in\mathcal{L}$.
-Note that the set of stages $\mathcal{R}$ and $F$ which respectively represent the raw data and the DAG's final stage have decision variables which are preset according to its site-wise distribution and final stage location.
-
-Each stage dependency $(k,l)$ and pair of links $(i,j)\in\mathcal{L}$ have a binary decision variable $q_{ij}^{kl}\in\{0,1\}$ that determines whether link $(i,j)$ is available to be used by stage $(k,l)$ or not.
-
-\subsubsection{Scheduling decisions}
-For each link, an ordering needs to be decided between all the data transfers on that link.
-Let $u_{ij}^{kl|mn}\in\{0,1\}$ be the binary decision to schedule data transfers $(k,l)$ before $(m,n)$ on link $(i,j)$.
-Note that this decision variable is already set if there exists a directed path that can pass through both $(k,l)$ and $(m,n)$.
-
-\subsection{Stage Assignment Problem}
-
-\subsubsection{Problem Statement}
-
-Given the available links for each dependency we have the following problem to minimize the cost of the WAN by deciding where to place each stage:
-
-\begin{subequations}\label{eq:opt_stage}
-	\begin{align}
-		\min_{\mathbf{x}} \quad & \sum_{(k,l)\in\mathcal{D}}\sum_{(i,j)\in\mathcal{L}}C_{ij}D^{kl}x_i^kx_j^l \nonumber \\
-		\text{s.t.}\quad & x_i^kx_j^l \leq q_{ij}^{kl} \quad \forall (i,j)\in\mathcal{L}, \forall(k,l)\in\mathcal{D} \label{eq:opt_stage-duration} \\
-		& \sum_{i\in\mathcal{S}}x_i^k = 1 \quad \forall k\in\mathcal{T} \label{eq:opt_stage-sum1} \\
-		& x_i^k \in \{0,1\} \quad \forall i\in\mathcal{S},k\in\mathcal{T} \label{eq:opt_stage-binary}
-	\end{align}
-\end{subequations}
-Note that for any stage $k\in\mathcal{R}\cup F$, the placement decision is preset.
 
 \subsection{Task Assignment Problem}
 
