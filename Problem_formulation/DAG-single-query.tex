@@ -16,10 +16,11 @@ For the analysis we make the following assumption:
 	\todo{Show that this assumption does not add suboptimality to our objective, i.e., any overlapping schedule can be transformed into a non-overlapping schedule without any loss to the optimal value.}
 \end{assumption}
 
-\begin{assumption}
-	Data transfers on a particular link are non-interruptible.
-	\todo{Show that this assumption does not add suboptimality to our objective, i.e., any schedule with interruptions can be transformed into a non-interruptible schedule without any loss to the optimal value.}
-\end{assumption}
+%We don't need this assumption if we allow preemption:
+%\begin{assumption}
+%	Data transfers on a particular link are non-interruptible.
+%	\todo{Show that this assumption does not add suboptimality to our objective, i.e., any schedule with interruptions can be transformed into a non-interruptible schedule without any loss to the optimal value.}
+%\end{assumption}
 
 \subsubsection{DAG of tasks}
 
@@ -47,12 +48,14 @@ The decision of stage $k$ to be placed at site $i$ is represented by the binary 
 This means that for any directed edge $(k,l)\in\mathcal{D}$, then $D^{kl}x_i^kx_j^l$ of data will be transfered across link $(i,j)\in\mathcal{L}$.
 Note that the set of stages $\mathcal{R}$ and $F$ which respectively represent the raw data and the DAG's final stage have decision variables which are preset according to its site-wise distribution and final stage location.
 
-Each stage dependency $(k,l)$ and pair of links $(i,j)\in\mathcal{L}$ have a binary decision variable $q_{ij}^{kl}\in\{0,1\}$ that determines whether link $(i,j)$ is available to be used by stage $(k,l)$ or not.
+%%% Adding in decisions to block data transfers:
+%Each stage dependency $(k,l)$ and pair of links $(i,j)\in\mathcal{L}$ have a binary decision variable $q_{ij}^{kl}\in\{0,1\}$ that determines whether link $(i,j)$ is available to be used by stage $(k,l)$ or not.
 
-\subsubsection{Scheduling decisions}
-For each link, an ordering needs to be decided between all the data transfers on that link.
-Let $u_{ij}^{kl|mn}\in\{0,1\}$ be the binary decision to schedule data transfers $(k,l)$ before $(m,n)$ on link $(i,j)$.
-Note that this decision variable is already set if there exists a directed path that can pass through both $(k,l)$ and $(m,n)$.
+%%% Modeling the Data transfer scheduling decisions:
+%\subsubsection{Scheduling decisions}
+%For each link, a priority needs to be decided between all the data transfers on that link.
+%Let $u_{ij}^{kl|mn}\in\{0,1\}$ be the binary decision to prioritize data transfer $(k,l)$ over $(m,n)$ on link $(i,j)$.
+%Note that this decision variable is already set if there exists a directed path that can pass through both $(k,l)$ and $(m,n)$.
 
 \subsection{Stage Assignment Problem}
 
@@ -63,12 +66,48 @@ Given the available links for each dependency we have the following problem to m
 \begin{subequations}\label{eq:opt_stage}
 	\begin{align}
 		\min_{\mathbf{x}} \quad & \sum_{(k,l)\in\mathcal{D}}\sum_{(i,j)\in\mathcal{L}}C_{ij}D^{kl}x_i^kx_j^l \nonumber \\
-		\text{s.t.}\quad & x_i^kx_j^l \leq q_{ij}^{kl} \quad \forall (i,j)\in\mathcal{L}, \forall(k,l)\in\mathcal{D} \label{eq:opt_stage-duration} \\
-		& \sum_{i\in\mathcal{S}}x_i^k = 1 \quad \forall k\in\mathcal{T} \label{eq:opt_stage-sum1} \\
+		%\text{s.t.}\quad & x_i^kx_j^l \leq q_{ij}^{kl} \quad \forall (i,j)\in\mathcal{L}, \forall(k,l)\in\mathcal{D} \label{eq:opt_stage-duration} \\
+		\text{s.t.}\quad & \sum_{i\in\mathcal{S}}x_i^k = 1 \quad \forall k\in\mathcal{T} \label{eq:opt_stage-sum1} \\
 		& x_i^k \in \{0,1\} \quad \forall i\in\mathcal{S},k\in\mathcal{T} \label{eq:opt_stage-binary}
 	\end{align}
 \end{subequations}
 Note that for any stage $k\in\mathcal{R}\cup F$, the placement decision is preset.
+
+\subsection{Data Transfer Scheduling Problem}
+
+The goal is to find a schedule $\pi$ given stage assignment $\mathbf{x}$ that satisfies the stage dependencies $\mathcal{D}$ from the DAG, the query's start time $T_0$ and deadline $T_f$.
+Let $t_0^{kl}$ and $t_f^{kl}$ be the start and finish times to transfer data from stage $k$ to stage $l$.
+Therefore, the schedule must satisfy:
+\begin{subequations}
+	\begin{align}
+		\max_{k:(k,l)\in\mathcal{D}}t_f^{kl}(\pi(\mathbf{x})) & \leq \min_{m:(l,m)\in\mathcal{D}}t_0^{lm}(\pi(\mathbf{x})) \quad \forall l\in\mathcal{T} \\
+		\min_{(k,l)\in\mathcal{D}}t_0^{kl}(\pi(\mathbf{x})) & \geq T_0 \\
+		\max_{(k,l)\in\mathcal{D}}t_f^{kl}(\pi(\mathbf{x})) & \leq T_f
+	\end{align}
+\end{subequations}
+
+The bandwidth constraints on each link must also be satisfied.
+Let $d_{ij}^{kl}$ be the total amount of time (not necessarily contiguous) that link $(i,j)$ is devoted to transfer data from stage $k$ to stage $l$.
+Therefore, the schedule must satisfy:
+\begin{align}
+	d_{ij}^{kl} \geq \dfrac{D^{kl}}{B_{ij}} \quad \forall (i,j,k,l): (i,j)\in\mathcal{L},(k,l)\in\mathcal{D},x_i^k=1,x_j^l=1
+\end{align}
+
+\begin{conjecture}
+	\cite{lawler1973optimal} gives an optimal scheduling algorithm for a DAG on a single machine.
+	With some effort, this can be proved for our case when the stage assignments have already been decided (multiple single machines with a DAG relating them all). 
+\end{conjecture}
+
+\subsection{Jointly optimization}
+
+The Stage Assignment Problem chooses the stage assignment to minimize WAN usage cost while the Data Transfer Scheduling Problem decides whether a stage assignment can be feasibly scheduled.
+Therefore, the joint optimization problem becomes finding a feasible stage assignment that minimizes the WAN usage cost.
+
+\begin{conjecture}
+	The Data Transfer Scheduling Problem can decide whether a given stage assignment has a feasible schedule or not.
+	If infeasible, it also finds the sequence of bottlenecking data transfers that make it not satisfy the query deadline constraint.
+	This infeasibility can be relayed back the Stage Assignment Problem's objective function with a carefully chosen dual cost.
+\end{conjecture}
 
 \subsection{Task Assignment Problem}
 
@@ -197,13 +236,3 @@ Inferences from the conditions
 \subsubsection{Optimality conditions if predecessor and successor stages are pre-assigned} \todo{}
 
 \subsubsection{Take advantage of sparcity} \todo{}
-
-\subsection{Data Transfer Scheduling Problem}
-
-Because of the dependencies specified by the DAG, each data transfer upper bound $d_{ij}^{kl}$ must be scheduled after the deadline of stage $k$ denoted $t^k$ and before the deadline of stage $l$ denoted $t^l$.
-Therefore the goal is to find a scheduling policy $\pi$ and stage deadlines $\mathbf{t}$ such that the query start time $T_0$ and deadline $T_f$ are satisfied for the given set of durations $\mathbf{d}$ and stage dependencies $\mathcal{D}$.
-
-\subsection{Jointly optimization}
-
-Both the Task Assignment and Data Transfer Scheduling problems are connected through the data transfer upper bounds $\mathbf{d}$.
-Therefore the joint optimization problem becomes if we can find a feasible schedule that minimizes the WAN usage cost by adjusting $\mathbf{d}$.

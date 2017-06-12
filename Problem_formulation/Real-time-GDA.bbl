@@ -60,6 +60,17 @@
 \newblock
 
 
+\bibitem[\protect\citeauthoryear{Lawler}{Lawler}{1973}]%
+        {lawler1973optimal}
+\bibfield{author}{\bibinfo{person}{Eugene~L Lawler}.}
+  \bibinfo{year}{1973}\natexlab{}.
+\newblock \showarticletitle{Optimal sequencing of a single machine subject to
+  precedence constraints}.
+\newblock \bibinfo{journal}{{\em Management science\/}} \bibinfo{volume}{19},
+  \bibinfo{number}{5} (\bibinfo{year}{1973}), \bibinfo{pages}{544--546}.
+\newblock
+
+
 \bibitem[\protect\citeauthoryear{P{\"o}Rn, Bj{\"o}Rk, and Westerlund}{P{\"o}Rn
   et~al\mbox{.}}{2008}]%
         {porn2008global}
