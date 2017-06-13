@@ -103,7 +103,10 @@ If $x_{i}^k$ can be relaxed from a binary variable to a nonnegative variable and
 \begin{conjecture}
 	We can guarantee that relaxing the binary constraint \eqref{eq:opt_stage_conv2-binary} to a nonnegativity constraint in \eqref{eq:opt_stage_conv2} always has an optimal solution which is binary.
 	We will prove this by proving that the constraints \eqref{eq:opt_stage_conv2-sum1} and  \eqref{eq:opt_stage_conv2-z} form a totally unimodular matrix.
+	\todo{Prove or disprove this conjecture.}
 \end{conjecture}
+
+\todo{What are the optimality conditions?}
 
 \subsection{Data Transfer Scheduling Problem}
 
@@ -126,11 +129,14 @@ Therefore, the schedule must satisfy:
 \end{align}
 
 \begin{conjecture}
-	\cite{lawler1973optimal} gives an optimal scheduling algorithm for a DAG on a single machine.
+	\cite{lawler1973optimal} gives an optimal scheduling algorithm for a DAG on a single machine called Latest Deadline First.
 	With some effort, this can be proved for our case when the stage assignments have already been decided (multiple single machines with a DAG relating them all). 
+	\todo{Prove or disprove this conjecture.}
 \end{conjecture}
 
-\subsection{Joint optimization}
+\todo{What are the necessary and sufficient conditions for a feasible schedule?}
+
+\subsection{Joint optimization and Algorithm Design}
 
 The Stage Assignment Problem chooses the stage assignment to minimize WAN usage cost while the Data Transfer Scheduling Problem decides whether a stage assignment can be feasibly scheduled.
 Therefore, the joint optimization problem becomes finding a feasible stage assignment that minimizes the WAN usage cost.
@@ -139,4 +145,19 @@ Therefore, the joint optimization problem becomes finding a feasible stage assig
 	The Data Transfer Scheduling Problem can decide whether a given stage assignment has a feasible schedule or not.
 	If infeasible, it also finds the sequence of bottlenecking data transfers that make it not satisfy the query deadline constraint.
 	This infeasibility can be relayed back the Stage Assignment Problem's objective function with a carefully chosen dual cost.
+	\todo{Prove or disprove this conjecture.}
 \end{conjecture}
+
+\todo{How to incorporate the necessary and feasibility conditions for a feasible schedule into the optimality conditions?}
+
+\todo{The algorithm should take advantage of sparsity.}
+
+\subsection{Numerical Simulations}
+
+\subsubsection{Example setup}
+
+\todo{Make an example that incorporates scheduling line contentions.}
+
+\subsubsection{Optimal Solution}
+
+\todo{Sensitivity analysis of optimal solution.}
