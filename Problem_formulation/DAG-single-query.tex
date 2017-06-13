@@ -73,6 +73,38 @@ Given the available links for each dependency we have the following problem to m
 \end{subequations}
 Note that for any stage $k\in\mathcal{R}\cup F$, the placement decision is preset.
 
+\subsubsection{Problem Reformulation}
+Since $x_i^k \in \{0,1\}$ and $x_j^l \in \{0,1\}$, then $x_i^kx_j^l=1$ iff $\max\{0,x_i^k+x_j^l-1\}=1$, and $x_i^kx_j^l=0$ iff $\max\{0,x_i^k+x_j^l-1\}=0$.
+This means that $x_i^kx_j^l$ and $\max\{0,x_i^k+x_j^l-1\}$ are equivalent for the binary decisions and the later is a convex function where the former is not.
+Therefore, \eqref{eq:opt_stage} can be reformulated with a convex objective function: 
+\begin{subequations}\label{eq:opt_stage_conv1}
+	\begin{align}
+		\min_{\mathbf{x}} \quad & \sum_{(k,l)\in\mathcal{D}}\sum_{(i,j)\in\mathcal{L}}C_{ij}D^{kl}\max\{0,x_i^k+x_j^l-1\} \nonumber \\
+		%\text{s.t.}\quad & x_i^kx_j^l \leq q_{ij}^{kl} \quad \forall (i,j)\in\mathcal{L}, \forall(k,l)\in\mathcal{D} \label{eq:opt_stage-duration} \\
+		\text{s.t.}\quad & \sum_{i\in\mathcal{S}}x_i^k = 1 \quad \forall k\in\mathcal{T} \label{eq:opt_stage_conv1-sum1} \\
+		& x_i^k \in \{0,1\} \quad \forall i\in\mathcal{S},k\in\mathcal{T} \label{eq:opt_stage_conv1-binary}
+	\end{align}
+\end{subequations}
+
+The max function can be further simplified with the use of an auxiliary variable $z_{ij}^{kl}$ to reformulate \eqref{eq:opt_stage_conv1}:
+\begin{subequations}\label{eq:opt_stage_conv2}
+	\begin{align}
+		\min_{\mathbf{x}} \quad & \sum_{(k,l)\in\mathcal{D}}\sum_{(i,j)\in\mathcal{L}}C_{ij}D^{kl}z_{ij}^{kl} \nonumber \\
+		%\text{s.t.}\quad & x_i^kx_j^l \leq q_{ij}^{kl} \quad \forall (i,j)\in\mathcal{L}, \forall(k,l)\in\mathcal{D} \label{eq:opt_stage-duration} \\
+		\text{s.t.}\quad & \sum_{i\in\mathcal{S}}x_i^k = 1 \quad \forall k\in\mathcal{T} \label{eq:opt_stage_conv2-sum1} \\
+		& x_i^k \in \{0,1\} \quad \forall i\in\mathcal{S},k\in\mathcal{T} \label{eq:opt_stage_conv2-binary} \\
+		& z_{ij}^{kl} \geq x_i^k+x_j^l-1 \quad \forall (i,j)\in\mathcal{L}, \forall(k,l)\in\mathcal{D} \label{eq:opt_stage_conv2-z}\\
+		& z_{ij}^{kl} \geq 0 \quad \forall (i,j)\in\mathcal{L}, \forall(k,l)\in\mathcal{D}
+	\end{align}
+\end{subequations}
+
+If $x_{i}^k$ can be relaxed from a binary variable to a nonnegative variable and still guarantee a binary optimal solution then \eqref{eq:opt_stage_conv2} could be simply reformulated as a linear program.
+
+\begin{conjecture}
+	We can guarantee that relaxing the binary constraint \eqref{eq:opt_stage_conv2-binary} to a nonnegativity constraint in \eqref{eq:opt_stage_conv2} always has an optimal solution which is binary.
+	We will prove this by proving that the constraints \eqref{eq:opt_stage_conv2-sum1} and  \eqref{eq:opt_stage_conv2-z} form a totally unimodular matrix.
+\end{conjecture}
+
 \subsection{Data Transfer Scheduling Problem}
 
 The goal is to find a schedule $\pi$ given stage assignment $\mathbf{x}$ that satisfies the stage dependencies $\mathcal{D}$ from the DAG, the query's start time $T_0$ and deadline $T_f$.
@@ -98,7 +130,7 @@ Therefore, the schedule must satisfy:
 	With some effort, this can be proved for our case when the stage assignments have already been decided (multiple single machines with a DAG relating them all). 
 \end{conjecture}
 
-\subsection{Jointly optimization}
+\subsection{Joint optimization}
 
 The Stage Assignment Problem chooses the stage assignment to minimize WAN usage cost while the Data Transfer Scheduling Problem decides whether a stage assignment can be feasibly scheduled.
 Therefore, the joint optimization problem becomes finding a feasible stage assignment that minimizes the WAN usage cost.
@@ -108,131 +140,3 @@ Therefore, the joint optimization problem becomes finding a feasible stage assig
 	If infeasible, it also finds the sequence of bottlenecking data transfers that make it not satisfy the query deadline constraint.
 	This infeasibility can be relayed back the Stage Assignment Problem's objective function with a carefully chosen dual cost.
 \end{conjecture}
-
-\subsection{Task Assignment Problem}
-
-\subsubsection{Problem Statement}
-
-We model each stage as a distributable group of tasks that may be fractionally assigned to multiple sites.
-The fraction of tasks from stage $k$ placed at site $i$ is represented by the nonnegative decision variable $x_i^k$ and proportionally determines the size of data transfers.
-This means that for any directed edge $(k,l)\in\mathcal{D}$, then $D^{kl}x_i^kx_j^l$ of data will be transfered across link $(i,j)\in\mathcal{L}$.
-Note that the set of stages $\mathcal{R}$ which represent the raw data have a decision variable which is preset according to its site-wise distribution.
-Each data transfer is given an upper bound on its size $d_{ij}^{kl}$ which will be used by the scheduling algorithm.
-
-The goal of the task assignment problem is to fractionally distribute the stages of tasks to minimize the WAN usage for a given set of link duration upper bounds:
-
-\begin{subequations}\label{eq:opt_task}
-	\begin{align}
-		\min_{\mathbf{x}} \quad & \sum_{(k,l)\in\mathcal{D}}\sum_{i\in\mathcal{S}}\sum_{j\in\mathcal{S}}C_{ij}D^{kl}x_i^kx_j^l \nonumber \\
-		\text{s.t.}\quad & D^{kl}x_i^kx_j^l \leq d_{ij}^{kl} \quad \forall\{i,j\}\in\mathcal{S}, \forall(k,l)\in\mathcal{D} \label{eq:opt_task-duration} \\
-		& \sum_{i\in\mathcal{S}}x_i^k = 1 \quad \forall k\in\mathcal{T} \label{eq:opt_task-sum1} \\
-		& x_i^k \geq 0 \quad \forall i\in\mathcal{S},k\in\mathcal{T} \label{eq:opt_task-nonneg}
-	\end{align}
-\end{subequations}
-
-\subsubsection{Necessary Feasibility Conditions} There needs to be a minimal amount of data flow allowed. Summing the over all pairs of sites for each $(k,l)\in\mathcal{D}$:
-\begin{align}
-	\sum_{i\in\mathcal{S}}\sum_{j\in\mathcal{S}}D^{kl}x_i^kx_j^l \leq \sum_{i\in\mathcal{S}}\sum_{j\in\mathcal{S}}d_{ij}^{kl} \quad\forall (k,l)\in\mathcal{D}. \nonumber
-\end{align}
-Since the sum of the $x$'s are 1 we have:
-\begin{align}
-	D^{kl} \leq \sum_{i\in\mathcal{S}}\sum_{j\in\mathcal{S}}d_{ij}^{kl} \quad\forall (k,l)\in\mathcal{D}.
-\end{align}
-
-\subsubsection{Sufficient Feasibility Conditions} \todo{}
-
-\subsubsection{Convexifying the problem}
-
-We are interested in convexifying the function $x_i^kx_j^l$.
-
-When there are not linear equalities, then paper \cite{gounaris2008convexity} gives necessary and sufficient properties of functions that can be used to replace the product $x_i^kx_j^l$.
-The idea is to replace $x_i^k$ with $f_1(y_1)$ and $x_j^l$ with $f_2(y_2)$ so that $F(y_1,y_2):=f_1(y_1)f_2(y_2)$ is jointly convex in $y_1$ and $y_2$.
-The properties they give imply that both $f_1(y_1)$ and $f_2(y_2)$ need to be strictly convex which works well for the objective function of \eqref{eq:opt_task} and \eqref{eq:opt_task-duration} but not for \eqref{eq:opt_task-sum1} when it becomes the summation of strictly convex functions.
-
-However when there are linear equalities that we want to keep, \cite{porn2008global} uses $x_i^k:= f_i^k(y_i^k) = e^{y_i^k}-\tau$ and then turns $x_i^kx_j^l$ into $e^{y_i^k+y_j^l}-\tau(y_i^k+y_j^l)+\tau^2$.
-The caveat is that we now have the equalities $y_i^k=\ln (x_i^k+\tau)$ which are concave and not linear.
-The paper uses a piecewise linear function to under-estimate the equalities.
-They run it on a convex optimization solver and update the piecewise linear grid based on the previous iteration's solution.
-This will numerically converge to the global optimal.
-
-\subsubsection{A convex lower bound on $x_i^kx_j^l$} and is tight if the decision variables $x_i^k$ are binary:
-\begin{align}
-	x_i^kx_j^l \geq \max\{0,x_i^k+x_j^l-1\} \quad \forall x_i^k\in[0,1],x_j^l\in[0,1]
-\end{align}
-\begin{align}
-	x_i^kx_j^l = \max\{0,x_i^k+x_j^l-1\} \quad \forall x_i^k\in\{0,1\},x_j^l\in\{0,1\}
-\end{align}
-
-\subsubsection{A convex upper bound on $x_i^kx_j^l$}
-\begin{align}
-	x_i^kx_j^l \leq \max\{(x_i^k)^2,(x_j^l)^2\}=(\max\{x_i^k,x_j^l\})^2 \quad \forall x_i^k\in[0,1],x_j^l\in[0,1]
-\end{align}
-
-
-\subsubsection{Characterizing the optima \eqref{eq:opt_task} directly}
-Although Problem \eqref{eq:opt_task} is not convex, we can still find properties of the optimal solution.
-
-By taking the Lagrange dual and the dual variables $(\boldsymbol{\lambda},\boldsymbol{\mu},\boldsymbol{\phi})$ corresponding with the respective constraints, we have the following first-order necessary stationary conditions for optimality:
-\begin{align}
-	\sum_{k:(k,l)\in\mathcal{D}}\sum_{i\in\mathcal{S}}C_{ij}D^{kl}x_i^k + \sum_{k:(l,k)\in\mathcal{D}}\sum_{i\in\mathcal{S}}C_{ji}D^{lk}x_i^k \nonumber \\
-	+ \sum_{k:(k,l)\in\mathcal{D}}\sum_{i\in\mathcal{S}}\lambda_{ij}^{kl}D^{kl}x_i^k + \sum_{k:(l,k)\in\mathcal{D}}\sum_{i\in\mathcal{S}}\lambda_{ji}^{lk}D^{lk}x_i^k \nonumber \\
-	- \mu^l - \phi_j^l = 0
-	\quad \forall j\in\mathcal{S},\forall l\in\mathcal{T} \nonumber
-\end{align}
-Combine the 1st and 3rd summations, combine the 2nd and 4th summations:
-\begin{align}
-	\sum_{k:(k,l)\in\mathcal{D}}\sum_{i\in\mathcal{S}} D^{kl}(C_{ij} + \lambda_{ij}^{kl})x_i^k
-	+ \sum_{k:(l,k)\in\mathcal{D}}\sum_{i\in\mathcal{S}} D^{lk}(C_{ji} + \lambda_{ji}^{lk})x_i^k \nonumber \\
-	- \mu^l - \phi_j^l = 0
-	\quad \forall j\in\mathcal{S},\forall l\in\mathcal{T} \nonumber
-\end{align}
-Relabel the index in the 2nd summation of the second summation set, and flip the summation order:
-\begin{align}
-	\sum_{i\in\mathcal{S}}\sum_{k:(k,l)\in\mathcal{D}} D^{kl}(C_{ij} + \lambda_{ij}^{kl})x_i^k
-	+ \sum_{i\in\mathcal{S}}\sum_{m:(l,m)\in\mathcal{D}} D^{lm}(C_{ji} + \lambda_{ji}^{lm})x_i^m \nonumber \\
-	= \mu^l + \phi_j^l
-	\quad \forall j\in\mathcal{S},\forall l\in\mathcal{T} \label{eq:cond_stat}
-\end{align}
-
-The dual feasibility constraints give us:
-\begin{subequations}\label{eq:cond_dual}
-	\begin{align}
-		\lambda_{ij}^{kl} \geq 0 & \quad \forall\{i,j\}\in\mathcal{S}, \forall(k,l)\in\mathcal{D} \label{eq:cond_dual_lambda} \\
-		\phi_j^l \geq 0 & \quad \forall j\in\mathcal{S},\forall l\in\mathcal{T} \label{eq:cond_dual_phi}
-	\end{align}
-\end{subequations}
-
-The complementary slackness constraints for the inequalities give us:
-\begin{subequations}\label{eq:cond_cs}
-	\begin{align}
-		\lambda_{ij}^{kl}\left(D^{kl}x_i^kx_j^l - d_{ij}^{kl}\right) = 0 & \quad \forall\{i,j\}\in\mathcal{S}, \forall(k,l)\in\mathcal{D} \label{eq:cond_cs_duration} \\
-		\phi_j^lx_j^l = 0 & \quad \forall j\in\mathcal{S},\forall l\in\mathcal{T} \label{eq:cond_cs_nonneg}
-	\end{align}
-\end{subequations}
-
-Therefore the necessary conditions for optimality are \eqref{eq:opt_task-duration} \eqref{eq:opt_task-sum1} \eqref{eq:opt_task-nonneg} \eqref{eq:cond_stat} \eqref{eq:cond_dual} \eqref{eq:cond_cs}.
-
-Inferences from the conditions
-\begin{enumerate}
-	\item At the optimal solution, the dual variables $\boldsymbol{\lambda}$ correspond with the negative gradient of the objective function w.r.t. the data transfer upper limits $\mathbf{d}$. (See \cite{bertsekas1999nonlinear} Proposition 3.3.3)
-	\item At the optimal solution, $\mu^l$ is the total WAN cost plus the product of dual prices and the upper limits for all incoming and outgoing data transfers associated with stage $l$.
-	Also each fraction of stage $l$ at site $j$ must share that same fraction of that stage's total cost. 
-	Multiply \eqref{eq:cond_stat} by $x_j^l$ and substitute with \eqref{eq:cond_cs}:
-	\begin{align}
-		\sum_{i\in\mathcal{S}}\sum_{k:(k,l)\in\mathcal{D}} C_{ij}D^{kl}x_i^kx_j^l + \lambda_{ij}^{kl}d_{ij}^{kl} \nonumber \\
-		+ \sum_{i\in\mathcal{S}}\sum_{m:(l,m)\in\mathcal{D}} C_{ji}D^{lm}x_j^lx_i^m+ \lambda_{ji}^{lm}d_{ji}^{lm} \nonumber \\
-		= \mu^lx_j^l
-		\quad \forall j\in\mathcal{S},\forall l\in\mathcal{T}
-	\end{align}
-	Then sum for all $j\in\mathcal{S}$ and then apply \eqref{eq:opt_task-sum1} to the RHS:
-	\begin{align}
-		\sum_{j\in\mathcal{S}}\sum_{i\in\mathcal{S}}\sum_{k:(k,l)\in\mathcal{D}} C_{ij}D^{kl}x_i^kx_j^l + \lambda_{ij}^{kl}d_{ij}^{kl} \nonumber \\
-		+ \sum_{j\in\mathcal{S}}\sum_{i\in\mathcal{S}}\sum_{m:(l,m)\in\mathcal{D}} C_{ji}D^{lm}x_j^lx_i^m+ \lambda_{ji}^{lm}d_{ji}^{lm} \nonumber \\
-		= \mu^l
-		\quad \forall l\in\mathcal{T}
-	\end{align}
-\end{enumerate}
-
-\subsubsection{Optimality conditions if predecessor and successor stages are pre-assigned} \todo{}
-
-\subsubsection{Take advantage of sparcity} \todo{}
