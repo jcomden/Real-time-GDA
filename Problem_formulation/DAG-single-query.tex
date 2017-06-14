@@ -135,8 +135,8 @@ Start with the KKT conditions for optimality using the following dual variables 
 		\phi_j^l \geq 0  \quad \forall j\in\mathcal{S},\forall l\in\mathcal{T} \label{eq:opt_stage_lin1_kkt1_dual1} \\
 		v_{ij}^{kl} \geq 0 \quad \forall (i,j)\in\mathcal{L}, \forall(k,l)\in\mathcal{D} \label{eq:opt_stage_lin1_kkt1_dual2} \\
 		\psi_{ij}^{kl} \geq 0 \quad \forall (i,j)\in\mathcal{L}, \forall(k,l)\in\mathcal{D} \label{eq:opt_stage_lin1_kkt1_dual3} \\
-		\sum_{i\in\mathcal{S}}x_i^k = 1 \quad \forall k\in\mathcal{T} \label{eq:opt_stage_lin1_kkt1_prim1} \\
-		x_i^k \geq 0 \quad \forall i\in\mathcal{S},k\in\mathcal{T} \label{eq:opt_stage_lin1_kkt1_prim2} \\
+		\sum_{j\in\mathcal{S}}x_j^l = 1 \quad \forall l\in\mathcal{T} \label{eq:opt_stage_lin1_kkt1_prim1} \\
+		x_j^l \geq 0 \quad \forall j\in\mathcal{S},l\in\mathcal{T} \label{eq:opt_stage_lin1_kkt1_prim2} \\
 		z_{ij}^{kl} \geq x_i^k+x_j^l-1 \quad \forall (i,j)\in\mathcal{L}, \forall(k,l)\in\mathcal{D} \label{eq:opt_stage_lin1_kkt1_prim3} \\
 		z_{ij}^{kl} \geq 0 \quad \forall (i,j)\in\mathcal{L}, \forall(k,l)\in\mathcal{D} \label{eq:opt_stage_lin1_kkt1_prim4}
 	\end{align}
@@ -152,8 +152,8 @@ Using the first two equations to solve for $\psi_{ij}^{kl}$ and $\phi_j^l$ and p
 		\forall j\in\mathcal{S},\forall l\in\mathcal{T} \label{eq:opt_stage_lin1_kkt2_dual1} \\
 		v_{ij}^{kl} \geq 0 \quad \forall (i,j)\in\mathcal{L}, \forall(k,l)\in\mathcal{D} \label{eq:opt_stage_lin1_kkt2_dual2} \\
 		C_{ij}D^{kl} \geq v_{ij}^{kl} \quad \forall (i,j)\in\mathcal{L}, \forall(k,l)\in\mathcal{D} \label{eq:opt_stage_lin1_kkt2_dual3} \\
-		\sum_{i\in\mathcal{S}}x_i^k = 1 \quad \forall k\in\mathcal{T} \label{eq:opt_stage_lin1_kkt2_prim1} \\
-		x_i^k \geq 0 \quad \forall i\in\mathcal{S},k\in\mathcal{T} \label{eq:opt_stage_lin1_kkt2_prim2} \\
+		\sum_{j\in\mathcal{S}}x_j^l = 1 \quad \forall l\in\mathcal{T} \label{eq:opt_stage_lin1_kkt2_prim1} \\
+		x_j^l \geq 0 \quad \forall j\in\mathcal{S},l\in\mathcal{T} \label{eq:opt_stage_lin1_kkt2_prim2} \\
 		z_{ij}^{kl} \geq x_i^k+x_j^l-1 \quad \forall (i,j)\in\mathcal{L}, \forall(k,l)\in\mathcal{D} \label{eq:opt_stage_lin1_kkt2_prim3} \\
 		z_{ij}^{kl} \geq 0 \quad \forall (i,j)\in\mathcal{L}, \forall(k,l)\in\mathcal{D} \label{eq:opt_stage_lin1_kkt2_prim4}
 	\end{align}
@@ -181,6 +181,7 @@ From the above result, \eqref{eq:opt_stage_lin1_kkt2_prim1}, and \eqref{eq:opt_s
 $u^l=\min_{j}\left\{\sum_{i:(i,j)\in\mathcal{L}}\sum_{k:(k,l)\in\mathcal{D}}v_{ij}^{kl}+\sum_{n:(j,n)\in\mathcal{L}}\sum_{m:(l,m)\in\mathcal{D}}v_{jn}^{lm}\right\}$ \\
 $\forall l\in\mathcal{T}$.
 
+\todo{Can we determine a rule or algorithm for $v_{ij}^{kl}(x_i^k+x_j^l;C_{ij}D^{kl})$ to solve the assignment problem?}
 
 \subsection{Data Transfer Scheduling Problem}
 
