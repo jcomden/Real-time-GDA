@@ -86,10 +86,10 @@ Therefore, \eqref{eq:opt_stage} can be reformulated with a convex objective func
 	\end{align}
 \end{subequations}
 
-The max function can be further simplified with the use of an auxiliary variable $z_{ij}^{kl}$ to reformulate \eqref{eq:opt_stage_conv1}:
+The max function can be further simplified with the use of an auxiliary variable $z_{ij}^{kl}$ and assume that $C_{ij}D^{kl}>0$ to reformulate \eqref{eq:opt_stage_conv1}:
 \begin{subequations}\label{eq:opt_stage_conv2}
 	\begin{align}
-		\min_{\mathbf{x}} \quad & \sum_{(k,l)\in\mathcal{D}}\sum_{(i,j)\in\mathcal{L}}C_{ij}D^{kl}z_{ij}^{kl} \nonumber \\
+		\min_{\mathbf{x},\mathbf{z}} \quad & \sum_{(k,l)\in\mathcal{D}}\sum_{(i,j)\in\mathcal{L}}C_{ij}D^{kl}z_{ij}^{kl} \nonumber \\
 		%\text{s.t.}\quad & x_i^kx_j^l \leq q_{ij}^{kl} \quad \forall (i,j)\in\mathcal{L}, \forall(k,l)\in\mathcal{D} \label{eq:opt_stage-duration} \\
 		\text{s.t.}\quad & \sum_{i\in\mathcal{S}}x_i^k = 1 \quad \forall k\in\mathcal{T} \label{eq:opt_stage_conv2-sum1} \\
 		& x_i^k \in \{0,1\} \quad \forall i\in\mathcal{S},k\in\mathcal{T} \label{eq:opt_stage_conv2-binary} \\
@@ -102,11 +102,85 @@ If $x_{i}^k$ can be relaxed from a binary variable to a nonnegative variable and
 
 \begin{conjecture}
 	We can guarantee that relaxing the binary constraint \eqref{eq:opt_stage_conv2-binary} to a nonnegativity constraint in \eqref{eq:opt_stage_conv2} always has an optimal solution which is binary.
-	We will prove this by proving that the constraints \eqref{eq:opt_stage_conv2-sum1} and  \eqref{eq:opt_stage_conv2-z} form a totally unimodular matrix.
+	One way to prove this by proving that the constraints \eqref{eq:opt_stage_conv2-sum1} and  \eqref{eq:opt_stage_conv2-z} form a totally unimodular matrix.
+	Another method is to prove from the optimality conditions.
 	\todo{Prove or disprove this conjecture.}
 \end{conjecture}
 
 \todo{What are the optimality conditions?}
+
+\subsubsection{Optimality conditions of the linear program}
+We take \eqref{eq:opt_stage_conv2} and relax the binary constraint to nonnegative:
+
+\begin{subequations}\label{eq:opt_stage_lin1}
+	\begin{align}
+		\min_{\mathbf{x},\mathbf{z}} \quad & \sum_{(k,l)\in\mathcal{D}}\sum_{(i,j)\in\mathcal{L}}C_{ij}D^{kl}z_{ij}^{kl} \nonumber \\
+		%\text{s.t.}\quad & x_i^kx_j^l \leq q_{ij}^{kl} \quad \forall (i,j)\in\mathcal{L}, \forall(k,l)\in\mathcal{D} \label{eq:opt_stage-duration} \\
+		\text{s.t.}\quad & \sum_{i\in\mathcal{S}}x_i^k = 1 \quad \forall k\in\mathcal{T} \label{eq:opt_stage_lin1-sum1} \\
+		& x_i^k \geq 0 \quad \forall i\in\mathcal{S},k\in\mathcal{T} \label{eq:opt_stage_lin1-xnonneg} \\
+		& z_{ij}^{kl} \geq x_i^k+x_j^l-1 \quad \forall (i,j)\in\mathcal{L}, \forall(k,l)\in\mathcal{D} \label{eq:opt_stage_line1-z}\\
+		& z_{ij}^{kl} \geq 0 \quad \forall (i,j)\in\mathcal{L}, \forall(k,l)\in\mathcal{D} \label{eq:opt_stage_lin1-znonneg}
+	\end{align}
+\end{subequations}
+
+Start with the KKT conditions for optimality using the following dual variables $(\mathbf{u},\boldsymbol{\phi},\mathbf{v},\boldsymbol{\psi})$ and assume that $C_{ij}D^{kl}>0\quad\forall (i,j)\in\mathcal{L}, \forall(k,l)\in\mathcal{D}$:
+\begin{subequations}\label{eq:opt_stage_lin1_kkt1}
+	\begin{align}
+		C_{ij}D^{kl}-v_{ij}^{kl}-\psi_{ij}^{kl} =0 \quad \forall (i,j)\in\mathcal{L}, \forall(k,l)\in\mathcal{D} \label{eq:opt_stage_lin1_kkt1_stat1} \\
+		-u^l-\phi_j^l+\sum_{i:(i,j)\in\mathcal{L}}\sum_{k:(k,l)\in\mathcal{D}}v_{ij}^{kl}+\sum_{n:(j,n)\in\mathcal{L}}\sum_{m:(l,m)\in\mathcal{D}}v_{jn}^{lm} =0 \nonumber\\
+		\forall j\in\mathcal{S},\forall l\in\mathcal{T} \label{eq:opt_stage_lin1_kkt1_stat2} \\
+		\phi_j^lx_j^l = 0 \quad \forall j\in\mathcal{S},\forall l\in\mathcal{T} \label{eq:opt_stage_lin1_kkt1_cs1} \\
+		(x_i^k+x_j^l-1-z_{ij}^{kl})v_{ij}^{kl} = 0 \quad \forall (i,j)\in\mathcal{L}, \forall(k,l)\in\mathcal{D} \label{eq:opt_stage_lin1_kkt1_cs2} \\
+		z_{ij}^{kl}\psi_{ij}^{kl} = 0 \quad \forall (i,j)\in\mathcal{L}, \forall(k,l)\in\mathcal{D} \label{eq:opt_stage_lin1_kkt1_cs3} \\
+		\phi_j^l \geq 0  \quad \forall j\in\mathcal{S},\forall l\in\mathcal{T} \label{eq:opt_stage_lin1_kkt1_dual1} \\
+		v_{ij}^{kl} \geq 0 \quad \forall (i,j)\in\mathcal{L}, \forall(k,l)\in\mathcal{D} \label{eq:opt_stage_lin1_kkt1_dual2} \\
+		\psi_{ij}^{kl} \geq 0 \quad \forall (i,j)\in\mathcal{L}, \forall(k,l)\in\mathcal{D} \label{eq:opt_stage_lin1_kkt1_dual3} \\
+		\sum_{i\in\mathcal{S}}x_i^k = 1 \quad \forall k\in\mathcal{T} \label{eq:opt_stage_lin1_kkt1_prim1} \\
+		x_i^k \geq 0 \quad \forall i\in\mathcal{S},k\in\mathcal{T} \label{eq:opt_stage_lin1_kkt1_prim2} \\
+		z_{ij}^{kl} \geq x_i^k+x_j^l-1 \quad \forall (i,j)\in\mathcal{L}, \forall(k,l)\in\mathcal{D} \label{eq:opt_stage_lin1_kkt1_prim3} \\
+		z_{ij}^{kl} \geq 0 \quad \forall (i,j)\in\mathcal{L}, \forall(k,l)\in\mathcal{D} \label{eq:opt_stage_lin1_kkt1_prim4}
+	\end{align}
+\end{subequations}
+Using the first two equations to solve for $\psi_{ij}^{kl}$ and $\phi_j^l$ and plug them into the rest, we have:
+\begin{subequations}\label{eq:opt_stage_lin1_kkt2}
+	\begin{align}
+		x_j^l\left(u^l-\sum_{i:(i,j)\in\mathcal{L}}\sum_{k:(k,l)\in\mathcal{D}}v_{ij}^{kl}-\sum_{n:(j,n)\in\mathcal{L}}\sum_{m:(l,m)\in\mathcal{D}}v_{jn}^{lm}\right) = 0 \nonumber \\
+		\forall j\in\mathcal{S},\forall l\in\mathcal{T} \label{eq:opt_stage_lin1_kkt2_cs1} \\
+		(x_i^k+x_j^l-1-z_{ij}^{kl})v_{ij}^{kl} = 0 \quad \forall (i,j)\in\mathcal{L}, \forall(k,l)\in\mathcal{D} \label{eq:opt_stage_lin1_kkt2_cs2}\\
+		z_{ij}^{kl}\left(C_{ij}D^{kl}-v_{ij}^{kl}\right) = 0 \quad \forall (i,j)\in\mathcal{L}, \forall(k,l)\in\mathcal{D} \label{eq:opt_stage_lin1_kkt2_cs3} \\
+		\sum_{i:(i,j)\in\mathcal{L}}\sum_{k:(k,l)\in\mathcal{D}}v_{ij}^{kl}+\sum_{n:(j,n)\in\mathcal{L}}\sum_{m:(l,m)\in\mathcal{D}}v_{jn}^{lm} \geq u^l \nonumber \\
+		\forall j\in\mathcal{S},\forall l\in\mathcal{T} \label{eq:opt_stage_lin1_kkt2_dual1} \\
+		v_{ij}^{kl} \geq 0 \quad \forall (i,j)\in\mathcal{L}, \forall(k,l)\in\mathcal{D} \label{eq:opt_stage_lin1_kkt2_dual2} \\
+		C_{ij}D^{kl} \geq v_{ij}^{kl} \quad \forall (i,j)\in\mathcal{L}, \forall(k,l)\in\mathcal{D} \label{eq:opt_stage_lin1_kkt2_dual3} \\
+		\sum_{i\in\mathcal{S}}x_i^k = 1 \quad \forall k\in\mathcal{T} \label{eq:opt_stage_lin1_kkt2_prim1} \\
+		x_i^k \geq 0 \quad \forall i\in\mathcal{S},k\in\mathcal{T} \label{eq:opt_stage_lin1_kkt2_prim2} \\
+		z_{ij}^{kl} \geq x_i^k+x_j^l-1 \quad \forall (i,j)\in\mathcal{L}, \forall(k,l)\in\mathcal{D} \label{eq:opt_stage_lin1_kkt2_prim3} \\
+		z_{ij}^{kl} \geq 0 \quad \forall (i,j)\in\mathcal{L}, \forall(k,l)\in\mathcal{D} \label{eq:opt_stage_lin1_kkt2_prim4}
+	\end{align}
+\end{subequations}
+
+Conditions \eqref{eq:opt_stage_lin1_kkt2_cs3} and \eqref{eq:opt_stage_lin1_kkt2_prim4} mean that:\\
+If $z_{ij}^{kl}>0$ then $v_{ij}^{kl}=C_{ij}D^{kl} \quad \forall (i,j)\in\mathcal{L}, \forall(k,l)\in\mathcal{D}$.
+
+Conditions \eqref{eq:opt_stage_lin1_kkt2_cs2} and \eqref{eq:opt_stage_lin1_kkt2_prim3} mean that:\\
+If $z_{ij}^{kl}>x_i^k+x_j^l-1$ then $v_{ij}^{kl}=0 \quad \forall (i,j)\in\mathcal{L}, \forall(k,l)\in\mathcal{D}$.
+
+The two previous results and conditions \eqref{eq:opt_stage_lin1_kkt2_prim3}, \eqref{eq:opt_stage_lin1_kkt2_prim4} along with the assumption $C_{ij}D^{kl}>0$ mean that:\\
+$z_{ij}^{kl}=\max\{0,x_i^k+x_j^l-1\} \quad \forall (i,j)\in\mathcal{L}, \forall(k,l)\in\mathcal{D}$.
+
+Then with \eqref{eq:opt_stage_lin1_kkt2_dual2} and \eqref{eq:opt_stage_lin1_kkt2_dual3}:\\
+If $x_i^k+x_j^l<1$, then $v_{ij}^{kl}=0 \quad \forall (i,j)\in\mathcal{L}, \forall(k,l)\in\mathcal{D}$.\\
+If $x_i^k+x_j^l=1$, then $v_{ij}^{kl}\in[0,C_{ij}D^{kl}] \quad \forall (i,j)\in\mathcal{L}, \forall(k,l)\in\mathcal{D}$.\\
+If $x_i^k+x_j^l>1$, then $v_{ij}^{kl}=C_{ij}D^{kl} \quad \forall (i,j)\in\mathcal{L}, \forall(k,l)\in\mathcal{D}$.
+
+Condition \eqref{eq:opt_stage_lin1_kkt2_cs1} means that:\\
+If $x_j^l>0$, then $ u^l=\sum_{i:(i,j)\in\mathcal{L}}\sum_{k:(k,l)\in\mathcal{D}}v_{ij}^{kl}+\sum_{n:(j,n)\in\mathcal{L}}\sum_{m:(l,m)\in\mathcal{D}}v_{jn}^{lm}$\\
+$\forall j\in\mathcal{S},\forall l\in\mathcal{T}$.
+
+From the above result, \eqref{eq:opt_stage_lin1_kkt2_prim1}, and \eqref{eq:opt_stage_lin1_kkt2_dual1}:\\
+$u^l=\min_{j}\left\{\sum_{i:(i,j)\in\mathcal{L}}\sum_{k:(k,l)\in\mathcal{D}}v_{ij}^{kl}+\sum_{n:(j,n)\in\mathcal{L}}\sum_{m:(l,m)\in\mathcal{D}}v_{jn}^{lm}\right\}$ \\
+$\forall l\in\mathcal{T}$.
+
 
 \subsection{Data Transfer Scheduling Problem}
 

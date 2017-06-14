@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.16 (MiKTeX 2.9) (preloaded format=pdflatex 2016.1.5)  13 JUN 2017 11:53
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (MiKTeX 2.9) (preloaded format=pdflatex 2016.1.5)  13 JUN 2017 20:53
 entering extended mode
 **Real-time-GDA.tex
 (Real-time-GDA.tex
@@ -1253,8 +1253,24 @@ LaTeX Font Info:    Font shape `OT1/LinuxLibertineT-TLF/sb/n' will be
 (Font)              scaled to size 5.5pt on input line 72.
 [1.1{C:/Users/jcomden/AppData/Local/MiKTeX/2.9/pdftex/config/pdftex.map}
 
-])
-(Real-time-GDA.bbl) (appendix.tex) [2.2
+]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+
+Overfull \hbox (26.96803pt too wide) in paragraph at lines 176--179
+\OT1/LinuxLibertineT-TLF/m/n/9 (-20) If $\OML/nxlmi/m/it/9 x[] > \OT1/LinuxLibe
+rtineT-TLF/m/n/9 (-20) 0$, then $\OML/nxlmi/m/it/9 u[] \U/ntxmia/m/it/9 = [][] 
+[][] \OML/nxlmi/m/it/9 v[] \U/ntxmia/m/it/9 ý [][] [][] \OML/nxlmi/m/it/9 v[]$ 
+
+ []
+
+
+Overfull \hbox (7.57657pt too wide) in paragraph at lines 180--183
+$\OML/nxlmi/m/it/9 u[] \U/ntxmia/m/it/9 = [][] []$ 
+ []
+
+[2.2]) (MR-single-query.tex [3.3]) (Real-time-GDA.bbl [4.4]) (appendix.tex)
+[5.5
 
 ]
 Package atveryend Info: Empty hook `BeforeClearDocument' on input line 170.
@@ -1263,19 +1279,19 @@ Package atveryend Info: Empty hook `AfterLastShipout' on input line 170.
 Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 170.
 Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 170.
 Package rerunfilecheck Info: File `Real-time-GDA.out' has not changed.
-(rerunfilecheck)             Checksum: 22C92A1126A032581A5E48C35E136281;1363.
+(rerunfilecheck)             Checksum: 18C70BC9200B23A4CEA8073469EEC478;1999.
 Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 170.
  ) 
 Here is how much of TeX's memory you used:
- 17837 strings out of 493673
- 267349 string characters out of 3141525
- 381544 words of memory out of 3000000
- 20491 multiletter control sequences out of 15000+200000
- 83315 words of font info for 237 fonts, out of 3000000 for 9000
+ 18104 strings out of 493673
+ 272209 string characters out of 3141525
+ 391315 words of memory out of 3000000
+ 20596 multiletter control sequences out of 15000+200000
+ 101112 words of font info for 304 fonts, out of 3000000 for 9000
  1186 hyphenation exceptions out of 8191
- 60i,12n,94p,403b,439s stack positions out of 5000i,500n,10000p,200000b,50000s
-{C:/Program Files (x86)/MiKTeX 2.9/fonts/enc/dvips/libertine/lbtn_c6xmqr.enc}
-{C:/Program Files (x86)/MiKTeX 2.9/fonts/enc/dvips/newtx/libertinealt.enc}{C:/P
+ 60i,12n,94p,596b,560s stack positions out of 5000i,500n,10000p,200000b,50000s
+{C:/Program Files (x86)/MiKTeX 2.9/fonts/enc/dvips/newtx/libertinealt.enc}{C:
+/Program Files (x86)/MiKTeX 2.9/fonts/enc/dvips/libertine/lbtn_c6xmqr.enc}{C:/P
 rogram Files (x86)/MiKTeX 2.9/fonts/enc/dvips/libertine/lbtn_ehpgim.enc}{C:/Pro
 gram Files (x86)/MiKTeX 2.9/fonts/enc/dvips/libertine/lbtn_naooyc.enc}{C:/Progr
 am Files (x86)/MiKTeX 2.9/fonts/enc/dvips/libertine/lbtn_tltjc6.enc}{C:/Program
@@ -1290,17 +1306,20 @@ MiKTeX 2.9/fonts/type1/public/libertine/LinBiolinumTI.pfb><C:/Program Files (x8
 (x86)/MiKTeX 2.9/fonts/type1/public/libertine/LinLibertineTB.pfb><C:/Program Fi
 les (x86)/MiKTeX 2.9/fonts/type1/public/libertine/LinLibertineTI.pfb><C:/Progra
 m Files (x86)/MiKTeX 2.9/fonts/type1/public/libertine/LinLibertineTZ.pfb><C:/Pr
+ogram Files (x86)/MiKTeX 2.9/fonts/type1/public/newtx/fxlri-5letters.pfb><C:/Pr
 ogram Files (x86)/MiKTeX 2.9/fonts/type1/public/newtx/fxlri-7letters.pfb><C:/Pr
 ogram Files (x86)/MiKTeX 2.9/fonts/type1/public/newtx/ntxsyralt.pfb><C:/Program
  Files (x86)/MiKTeX 2.9/fonts/type1/public/txfonts/rtxmi.pfb><C:/Program Files 
 (x86)/MiKTeX 2.9/fonts/type1/public/newtx/rtxmi7.pfb><C:/Program Files (x86)/Mi
 KTeX 2.9/fonts/type1/public/txfonts/rtxr.pfb><C:/Program Files (x86)/MiKTeX 2.9
 /fonts/type1/public/newtx/txexs.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/ty
-pe1/public/newtx/txsys.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/publi
-c/newtx/zxlri.pfb>
-Output written on Real-time-GDA.pdf (2 pages, 598074 bytes).
+pe1/public/txfonts/txsyc.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/pub
+lic/newtx/txsys.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/newtx
+/zxlri.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/newtx/zxlzi.pf
+b>
+Output written on Real-time-GDA.pdf (5 pages, 734435 bytes).
 PDF statistics:
- 175 PDF objects out of 1000 (max. 8388607)
- 44 named destinations out of 1000 (max. 500000)
- 46145 words of extra memory for PDF output out of 51595 (max. 10000000)
+ 355 PDF objects out of 1000 (max. 8388607)
+ 136 named destinations out of 1000 (max. 500000)
+ 46185 words of extra memory for PDF output out of 51595 (max. 10000000)
 
