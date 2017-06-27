@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.16 (MiKTeX 2.9) (preloaded format=pdflatex 2016.1.5)  20 JUN 2017 00:26
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (MiKTeX 2.9) (preloaded format=pdflatex 2016.1.5)  27 JUN 2017 00:50
 entering extended mode
 **Real-time-GDA.tex
 (Real-time-GDA.tex
@@ -1226,106 +1226,81 @@ File: mt-msa.cfg 2006/02/04 v1.1 microtype config. file: AMS symbols (a) (RS)
 ("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\microtype\mt-msb.cfg"
 File: mt-msb.cfg 2005/06/01 v1.0 microtype config. file: AMS symbols (b) (RS)
 )
-(Multi-machine-DAG-scheduling.tex) (DAG-single-query.tex
+(Multi-machine-DAG-scheduling.tex
 LaTeX Font Info:    Font shape `OT1/LinuxBiolinumT-TLF/m/n' will be
-(Font)              scaled to size 9.0pt on input line 7.
+(Font)              scaled to size 9.0pt on input line 31.
 LaTeX Font Info:    Font shape `OT1/LinuxBiolinumT-TLF/m/it' will be
-(Font)              scaled to size 9.0pt on input line 7.
+(Font)              scaled to size 9.0pt on input line 31.
+LaTeX Font Info:    Font shape `OT1/LinuxLibertineT-TLF/m/n' will be
+(Font)              scaled to size 10.95pt on input line 37.
+LaTeX Font Info:    Font shape `OT1/LinuxLibertineT-TLF/m/n' will be
+(Font)              scaled to size 6.1pt on input line 37.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `math shift' on input line 37.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `math shift' on input line 37.
+
+LaTeX Font Info:    Font shape `TS1/LinuxLibertineT-TLF/m/n' will be
+(Font)              scaled to size 9.0pt on input line 57.
 LaTeX Font Info:    Font shape `OT1/LinuxLibertineT-TLF/m/it' will be
-(Font)              scaled to size 9.0pt on input line 9.
-LaTeX Font Info:    Font shape `OT1/LinuxLibertineT-TLF/m/sc' will be
-(Font)              scaled to size 9.0pt on input line 10.
-Package microtype Info: Character `013' is missing
-(microtype)             in font `OT1/LinuxLibertineT-TLF/m/sc/9'.
-(microtype)             Ignoring protrusion settings for this character.
+(Font)              scaled to size 9.0pt on input line 61.
 
-Overfull \hbox (13.38887pt too wide) in paragraph at lines 15--17
-[][][]\OT1/LinuxLibertineT-TLF/m/sc/9 (-20) Assumption 2. []\OT1/LinuxLibertine
-T-TLF/m/it/9 (-20) Data trans-fers on a par-tic-u-lar link are non-overlapping.
-
+Overfull \hbox (1.55644pt too wide) in paragraph at lines 80--82
+\OT1/LinuxLibertineT-TLF/m/n/9 (-20) for mul-ti-ple jobs, each with ar-bi-trary
+ prece-dence con-straints. 
  []
 
-LaTeX Font Info:    Font shape `OT1/LinuxLibertineT-TLF/sb/n' will be
-(Font)              scaled to size 9.0pt on input line 72.
-LaTeX Font Info:    Font shape `OT1/LinuxLibertineT-TLF/sb/n' will be
-(Font)              scaled to size 7.3pt on input line 72.
-LaTeX Font Info:    Font shape `OT1/LinuxLibertineT-TLF/sb/n' will be
-(Font)              scaled to size 5.5pt on input line 72.
 [1.1{C:/Users/jcomden/AppData/Local/MiKTeX/2.9/pdftex/config/pdftex.map}
 
+])
+(Real-time-GDA.bbl) (appendix.tex) [2.2
+
 ]
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
-
-Overfull \hbox (26.96803pt too wide) in paragraph at lines 176--179
-\OT1/LinuxLibertineT-TLF/m/n/9 (-20) If $\OML/nxlmi/m/it/9 x[] > \OT1/LinuxLibe
-rtineT-TLF/m/n/9 (-20) 0$, then $\OML/nxlmi/m/it/9 u[] \U/ntxmia/m/it/9 = [][] 
-[][] \OML/nxlmi/m/it/9 v[] \U/ntxmia/m/it/9 ý [][] [][] \OML/nxlmi/m/it/9 v[]$ 
-
- []
-
-
-Overfull \hbox (7.57657pt too wide) in paragraph at lines 180--183
-$\OML/nxlmi/m/it/9 u[] \U/ntxmia/m/it/9 = [][] []$ 
- []
-
-
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
- [2.2])
-(Real-time-GDA.bbl) (appendix.tex) [3.3]
 Package atveryend Info: Empty hook `BeforeClearDocument' on input line 171.
 Package atveryend Info: Empty hook `AfterLastShipout' on input line 171.
  (Real-time-GDA.aux)
 Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 171.
 Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 171.
-
-
-Package rerunfilecheck Warning: File `Real-time-GDA.out' has changed.
-(rerunfilecheck)                Rerun to get outlines right
-(rerunfilecheck)                or use package `bookmark'.
-
-Package rerunfilecheck Info: Checksums for `Real-time-GDA.out':
-(rerunfilecheck)             Before: 09F96084FED49B65A4486BFFAA24FD78;1670
-(rerunfilecheck)             After:  B309998C2C02484A1A580FF82D5CC206;1640.
+Package rerunfilecheck Info: File `Real-time-GDA.out' has not changed.
+(rerunfilecheck)             Checksum: FEC156CDC69F08896D3085B39D066D15;1712.
 Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 171.
  ) 
 Here is how much of TeX's memory you used:
- 17960 strings out of 493673
- 269659 string characters out of 3141525
- 390597 words of memory out of 3000000
- 20563 multiletter control sequences out of 15000+200000
- 92633 words of font info for 263 fonts, out of 3000000 for 9000
+ 17863 strings out of 493673
+ 267583 string characters out of 3141525
+ 377270 words of memory out of 3000000
+ 20530 multiletter control sequences out of 15000+200000
+ 90544 words of font info for 261 fonts, out of 3000000 for 9000
  1186 hyphenation exceptions out of 8191
- 60i,12n,94p,403b,442s stack positions out of 5000i,500n,10000p,200000b,50000s
-{C:/Program Files (x86)/MiKTeX 2.9/fonts/enc/dvips/newtx/libertinealt.enc}{C:
-/Program Files (x86)/MiKTeX 2.9/fonts/enc/dvips/libertine/lbtn_c6xmqr.enc}{C:/P
-rogram Files (x86)/MiKTeX 2.9/fonts/enc/dvips/libertine/lbtn_ehpgim.enc}{C:/Pro
-gram Files (x86)/MiKTeX 2.9/fonts/enc/dvips/libertine/lbtn_naooyc.enc}{C:/Progr
-am Files (x86)/MiKTeX 2.9/fonts/enc/dvips/libertine/lbtn_tltjc6.enc}{C:/Program
- Files (x86)/MiKTeX 2.9/fonts/enc/dvips/fontname/8r.enc}{C:/Program Files (x86)
-/MiKTeX 2.9/fonts/enc/dvips/libertine/lbtn_xogrpz.enc}{C:/Program Files (x86)/M
-iKTeX 2.9/fonts/enc/dvips/libertine/lbtn_c7kyj5.enc}{C:/Program Files (x86)/MiK
-TeX 2.9/fonts/enc/dvips/libertine/lbtn_lu7m2n.enc}<C:/Program Files (x86)/MiKTe
-X 2.9/fonts/type1/public/libertine/LinBiolinumT.pfb><C:/Program Files (x86)/MiK
-TeX 2.9/fonts/type1/public/libertine/LinBiolinumTB.pfb><C:/Program Files (x86)/
-MiKTeX 2.9/fonts/type1/public/libertine/LinBiolinumTI.pfb><C:/Program Files (x8
-6)/MiKTeX 2.9/fonts/type1/public/libertine/LinLibertineT.pfb><C:/Program Files 
-(x86)/MiKTeX 2.9/fonts/type1/public/libertine/LinLibertineTB.pfb><C:/Program Fi
-les (x86)/MiKTeX 2.9/fonts/type1/public/libertine/LinLibertineTI.pfb><C:/Progra
-m Files (x86)/MiKTeX 2.9/fonts/type1/public/libertine/LinLibertineTZ.pfb><C:/Pr
+ 60i,11n,94p,493b,509s stack positions out of 5000i,500n,10000p,200000b,50000s
+{C:/Program Files (x86)/MiKTeX 2.9/fonts/enc/dvips/libertine/lbtn_c6xmqr.enc}
+{C:/Program Files (x86)/MiKTeX 2.9/fonts/enc/dvips/libertine/lbtn_naooyc.enc}{C
+:/Program Files (x86)/MiKTeX 2.9/fonts/enc/dvips/newtx/libertinealt.enc}{C:/Pro
+gram Files (x86)/MiKTeX 2.9/fonts/enc/dvips/fontname/8r.enc}{C:/Program Files (
+x86)/MiKTeX 2.9/fonts/enc/dvips/libertine/lbtn_xogrpz.enc}{C:/Program Files (x8
+6)/MiKTeX 2.9/fonts/enc/dvips/libertine/lbtn_c7kyj5.enc}{C:/Program Files (x86)
+/MiKTeX 2.9/fonts/enc/dvips/libertine/lbtn_lu7m2n.enc}<C:/Program Files (x86)/M
+iKTeX 2.9/fonts/type1/public/libertine/LinBiolinumT.pfb><C:/Program Files (x86)
+/MiKTeX 2.9/fonts/type1/public/libertine/LinBiolinumTB.pfb><C:/Program Files (x
+86)/MiKTeX 2.9/fonts/type1/public/libertine/LinBiolinumTI.pfb><C:/Program Files
+ (x86)/MiKTeX 2.9/fonts/type1/public/libertine/LinLibertineT.pfb><C:/Program Fi
+les (x86)/MiKTeX 2.9/fonts/type1/public/libertine/LinLibertineTB.pfb><C:/Progra
+m Files (x86)/MiKTeX 2.9/fonts/type1/public/libertine/LinLibertineTI.pfb><C:/Pr
+ogram Files (x86)/MiKTeX 2.9/fonts/type1/public/newtx/fxlri-5letters.pfb><C:/Pr
 ogram Files (x86)/MiKTeX 2.9/fonts/type1/public/newtx/fxlri-7letters.pfb><C:/Pr
 ogram Files (x86)/MiKTeX 2.9/fonts/type1/public/newtx/ntxsyralt.pfb><C:/Program
  Files (x86)/MiKTeX 2.9/fonts/type1/public/txfonts/rtxmi.pfb><C:/Program Files 
-(x86)/MiKTeX 2.9/fonts/type1/public/newtx/rtxmi7.pfb><C:/Program Files (x86)/Mi
-KTeX 2.9/fonts/type1/public/txfonts/rtxr.pfb><C:/Program Files (x86)/MiKTeX 2.9
-/fonts/type1/public/newtx/txexs.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/ty
-pe1/public/newtx/txsys.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/publi
-c/newtx/zxlri.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/newtx/z
-xlzi.pfb>
-Output written on Real-time-GDA.pdf (3 pages, 626267 bytes).
+(x86)/MiKTeX 2.9/fonts/type1/public/txfonts/rtxr.pfb><C:/Program Files (x86)/Mi
+KTeX 2.9/fonts/type1/public/newtx/txexs.pfb><C:/Program Files (x86)/MiKTeX 2.9/
+fonts/type1/public/newtx/txsys.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/typ
+e1/public/newtx/zxlri.pfb>
+Output written on Real-time-GDA.pdf (2 pages, 512065 bytes).
 PDF statistics:
- 235 PDF objects out of 1000 (max. 8388607)
- 76 named destinations out of 1000 (max. 500000)
- 46153 words of extra memory for PDF output out of 51595 (max. 10000000)
+ 158 PDF objects out of 1000 (max. 8388607)
+ 34 named destinations out of 1000 (max. 500000)
+ 42057 words of extra memory for PDF output out of 42996 (max. 10000000)
 

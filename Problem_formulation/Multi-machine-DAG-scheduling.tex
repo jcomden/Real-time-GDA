@@ -1,1 +1,87 @@
-\section{Task graph scheduling on uniform machines}
+\section{Assigning and Scheduling Job Tasks on Machines}
+
+\subsection{Model}
+Suppose that there is a set of jobs $\mathcal{J}$ where each job $J\in\mathcal{J}$ can be separated into a set of individual tasks $\mathcal{T}_J$.
+For a particular set tasks for a job $\mathcal{T}_J$, there is a directed acyclic graph (DAG) that represents the precedence constraints between the tasks.
+A precedence constraint $j\rightarrow k$ means that task $j$ must completely finish before task $k$ can start.
+Each task $i$ requires $w_i$ units of work to be done.
+Let $c_i$ be time at which task $i$ is fully completed.
+Therefore, the completion time for a particular job $J$ is $C_J=\max_{i\in\mathcal{T}_J}\{c_i\}$.
+
+There is a set of machines $\mathcal{M}$ that perform work on the job tasks.
+Each machine $m\in\mathcal{M}$ has a specific speed $s_m$ at which it performs work.
+Therefore, if task $i$ is assigned to machine $m$, then it takes $w_i/s_m$ units of time to complete the task.
+Let $W_m$ be the total amount of work that machine $m$ does and $b_m$ be the per unit cost for doing that work.
+
+We make the following assumptions:
+\begin{enumerate}
+	\item Each task can only be completed by one machine but can be preempted an unlimited number of times at that machine.
+	\item Each machine can only work on one task at any moment in time.
+\end{enumerate}
+
+\subsection{Problem}
+
+The goal is to minimize the sum of the average completion time among all of the jobs and the cost of using the machines:
+\begin{align}
+	\min \frac{1}{|\mathcal{J}|}\sum_{J\in\mathcal{J}} C_J + \sum_{m\in\mathcal{M}} b_mW_m \label{eq:gen_prob}
+\end{align}
+
+\subsubsection{Decisions}
+
+For each task $i$ we must assign it to a particular machine $m$ to be worked on.
+Let $\mathcal{A}:\cup_{J\in\mathcal{J}}\mathcal{T}_J\rightarrow \mathcal{M}$ be the assignment.
+For each machine $m\in\mathcal{M}$ we must decide a priority ordering $Q_m$ of its assigned tasks.
+A machine will always be busy as long as there is an available task assigned to it that is not yet fully completed.
+From a group of available tasks assigned to it, a machine will choose to work on the task that has the highest priority at any moment of time.
+
+\subsection{Special Cases: Single machine, $|\mathcal{M}|=1$}
+
+By restricting to $|\mathcal{M}|=1$, we eliminate the assignment decision problem.
+
+\subsubsection{Single job, $|\mathcal{J}|=1$}
+
+By restricting to only a single job with arbitrary precedence constraints, we only need to focus on the following minimax objective function:
+\begin{align}
+	\min_Q \max_{i\in\mathcal{T}}\{c_i\}
+\end{align}
+which can be solved in $O(|\mathcal{T}|^2)$ using a more general solution by \cite{baker1983preemptive}.
+The general solution allows for arbitrary release times for each task, and the more general objective $\min \max\{f_i(c_i)\}$ where $f_i(\cdot)$ is a monotonically nondecreasing function which could include deadlines.
+
+\subsubsection{Single-task jobs, $|\mathcal{T}_J|=1,\forall J\in\mathcal{J}$}
+
+By restricting to jobs with only one task we eliminate the precedence constraints.
+We get the following objective function:
+\begin{align}
+	\min_Q \frac{1}{|\mathcal{J}|}\sum_{J\in\mathcal{J}} C_J
+\end{align}
+which can be solved in $O(|\mathcal{J}|\log |\mathcal{J}|)$ using a more general solution by \cite{baker1974introduction} or \S 4.3.1 in \cite{brucker2007scheduling}.
+The general solution allows for arbitrary release times for each job.
+
+\subsection{If preemptions are not allowed}
+Suppose we decide to restrict the first assumption to: \emph{Each task can only be completed by one machine and cannot be preempted}.  Then our problem becomes NP-hard since it is a special case in \cite{lenstra1977complexity} which was shown to be NP-complete for $|\mathcal{M}|=2$, $s_1=s_2$, $b_1=b_2=0$, $|\mathcal{J}|=1$, and no precedence constraints between the tasks for the single job.
+
+\subsection{If you allowing tasks to be split between machines}
+Suppose we decide to restrict the first assumption to: \emph{Each task can be completed by any number of machines and can be preempted an unlimited number of times at those machines.  However, a task can only be worked on by one machine at any given point of time}.  Essentially this means ``preemption" in the literature for multiple machine scheduling.
+
+\subsubsection{Single-task jobs, $|\mathcal{T}_J|=1,\forall J\in\mathcal{J}$, and $b_m=0$ for all $m\in\mathcal{M}$}
+This allows for a solution to be found in $O(|\mathcal{J}|\log |\mathcal{J}| + |\mathcal{M}||\mathcal{J}|)$ by \cite{labetoulle1984preemptive} or \S 5.1.2 in \cite{brucker2007scheduling}.
+
+\subsubsection{Two machines and Single job, $|\mathcal{M}|=2$, $|\mathcal{J}|=1$, and $b_1=b_2=0$}
+This allows for a solution to be found in $O(|\mathcal{T}_J|^2)$ by \cite{lawler1982preemptive}.
+
+\subsubsection{Single job, $|\mathcal{J}|=1$ and $b_m=0$ for all $m\in\mathcal{M}$}
+This is NP-hard even when restricted to identical machines ($s_m=s$ for all $m\in\mathcal{M}$) and all tasks the same size ($w_i=w$ for all $i\in\mathcal{T}$) \cite{ullman1976complexity}.
+
+\subsection{Next steps}
+\begin{enumerate}
+	\item Combine the first two special cases so that on a single machine, we can minimize
+	\begin{align}
+		\min_Q \frac{1}{|\mathcal{J}|}\sum_{J\in\mathcal{J}} C_J
+	\end{align}
+	for multiple jobs, each with arbitrary precedence constraints.
+	\item Expand the previous step to cover multiple machines starting with two machines.
+	Assume that the assignment is already given.
+	Find equations that describe an optimal structure.
+	If the problem seems NP-hard, try to prove it.
+	\item Use the equations to find to optimize for the assignment.  Maybe the problem becomes NP-hard at this point (prove it).
+\end{enumerate}

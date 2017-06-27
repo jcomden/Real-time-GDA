@@ -1,5 +1,11 @@
 This is BibTeX, Version 0.99dThe top-level auxiliary file: Real-time-GDA.aux
 The style file: ACM-Reference-Format.bst
 Database file #1: reference.bib
-Warning--empty address in bertsekas1999nonlinear
-(There was 1 warning)
+Warning--empty address in baker1974introduction
+Warning--empty address in brucker2007scheduling
+Warning--no journal in labetoulle1984preemptive
+Warning--no number and no volume in labetoulle1984preemptive
+Warning--page numbers missing in both pages and numpages fields in labetoulle1984preemptive
+Warning--no number and no volume in ullman1976complexity
+Warning--page numbers missing in both pages and numpages fields in ullman1976complexity
+(There were 7 warnings)

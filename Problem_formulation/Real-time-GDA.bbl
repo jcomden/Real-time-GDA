@@ -38,49 +38,81 @@
 \providecommand\natexlab[1]{#1}
 \providecommand\showeprint[2][]{arXiv:#2}
 
-\bibitem[\protect\citeauthoryear{Bertsekas}{Bertsekas}{1999}]%
-        {bertsekas1999nonlinear}
-\bibfield{author}{\bibinfo{person}{Dimitri~P Bertsekas}.}
-  \bibinfo{year}{1999}\natexlab{}.
-\newblock \bibinfo{booktitle}{{\em Nonlinear programming}}.
-\newblock \bibinfo{publisher}{Athena scientific Belmont}.
+\bibitem[\protect\citeauthoryear{Baker}{Baker}{1974}]%
+        {baker1974introduction}
+\bibfield{author}{\bibinfo{person}{Kenneth~R Baker}.}
+  \bibinfo{year}{1974}\natexlab{}.
+\newblock \bibinfo{booktitle}{{\em Introduction to sequencing and scheduling}}.
+\newblock \bibinfo{publisher}{John Wiley \& Sons}.
 \newblock
 
 
-\bibitem[\protect\citeauthoryear{Gounaris and Floudas}{Gounaris and
-  Floudas}{2008}]%
-        {gounaris2008convexity}
-\bibfield{author}{\bibinfo{person}{CE Gounaris} {and} \bibinfo{person}{CA
-  Floudas}.} \bibinfo{year}{2008}\natexlab{}.
-\newblock \showarticletitle{Convexity of products of univariate functions and
-  convexification transformations for geometric programming}.
-\newblock \bibinfo{journal}{{\em Journal of Optimization Theory and
-  Applications\/}} \bibinfo{volume}{138}, \bibinfo{number}{3}
-  (\bibinfo{year}{2008}), \bibinfo{pages}{407--427}.
+\bibitem[\protect\citeauthoryear{Baker, Lawler, Lenstra, and Rinnooy~Kan}{Baker
+  et~al\mbox{.}}{1983}]%
+        {baker1983preemptive}
+\bibfield{author}{\bibinfo{person}{Kenneth~R Baker}, \bibinfo{person}{Eugene~L
+  Lawler}, \bibinfo{person}{Jan~Karel Lenstra}, {and} \bibinfo{person}{AHG
+  Rinnooy~Kan}.} \bibinfo{year}{1983}\natexlab{}.
+\newblock \showarticletitle{Preemptive scheduling of a single machine to
+  minimize maximum cost subject to release dates and precedence constraints}.
+\newblock \bibinfo{journal}{{\em Operations Research\/}} \bibinfo{volume}{31},
+  \bibinfo{number}{2} (\bibinfo{year}{1983}), \bibinfo{pages}{381--386}.
 \newblock
 
 
-\bibitem[\protect\citeauthoryear{Lawler}{Lawler}{1973}]%
-        {lawler1973optimal}
-\bibfield{author}{\bibinfo{person}{Eugene~L Lawler}.}
-  \bibinfo{year}{1973}\natexlab{}.
-\newblock \showarticletitle{Optimal sequencing of a single machine subject to
-  precedence constraints}.
-\newblock \bibinfo{journal}{{\em Management science\/}} \bibinfo{volume}{19},
-  \bibinfo{number}{5} (\bibinfo{year}{1973}), \bibinfo{pages}{544--546}.
+\bibitem[\protect\citeauthoryear{Brucker and Brucker}{Brucker and
+  Brucker}{2007}]%
+        {brucker2007scheduling}
+\bibfield{author}{\bibinfo{person}{Peter Brucker} {and} \bibinfo{person}{P
+  Brucker}.} \bibinfo{year}{2007}\natexlab{}.
+\newblock \bibinfo{booktitle}{{\em Scheduling algorithms}}.
+  Vol.~\bibinfo{volume}{3}.
+\newblock \bibinfo{publisher}{Springer}.
 \newblock
 
 
-\bibitem[\protect\citeauthoryear{P{\"o}Rn, Bj{\"o}Rk, and Westerlund}{P{\"o}Rn
-  et~al\mbox{.}}{2008}]%
-        {porn2008global}
-\bibfield{author}{\bibinfo{person}{Ray P{\"o}Rn}, \bibinfo{person}{Kaj-Mikael
-  Bj{\"o}Rk}, {and} \bibinfo{person}{Tapio Westerlund}.}
-  \bibinfo{year}{2008}\natexlab{}.
-\newblock \showarticletitle{Global solution of optimization problems with
-  signomial parts}.
-\newblock \bibinfo{journal}{{\em Discrete optimization\/}} \bibinfo{volume}{5},
-  \bibinfo{number}{1} (\bibinfo{year}{2008}), \bibinfo{pages}{108--120}.
+\bibitem[\protect\citeauthoryear{Labetoulle, Lawler, Lenstra, and
+  Kan}{Labetoulle et~al\mbox{.}}{1984}]%
+        {labetoulle1984preemptive}
+\bibfield{author}{\bibinfo{person}{Jacques Labetoulle},
+  \bibinfo{person}{Eugene~L Lawler}, \bibinfo{person}{Jan~Karel Lenstra}, {and}
+  \bibinfo{person}{AHG~Rinnooy Kan}.} \bibinfo{year}{1984}\natexlab{}.
+\newblock \showarticletitle{Preemptive scheduling of uniform machines subject
+  to release dates}.
+\newblock  (\bibinfo{year}{1984}).
+\newblock
+
+
+\bibitem[\protect\citeauthoryear{Lawler}{Lawler}{1982}]%
+        {lawler1982preemptive}
+\bibfield{author}{\bibinfo{person}{EL Lawler}.}
+  \bibinfo{year}{1982}\natexlab{}.
+\newblock \showarticletitle{Preemptive scheduling of precedence-constrained
+  jobs on parallel machines}.
+\newblock \bibinfo{journal}{{\em Deterministic and stochastic scheduling\/}}
+  \bibinfo{volume}{84} (\bibinfo{year}{1982}), \bibinfo{pages}{101--123}.
+\newblock
+
+
+\bibitem[\protect\citeauthoryear{Lenstra, Kan, and Brucker}{Lenstra
+  et~al\mbox{.}}{1977}]%
+        {lenstra1977complexity}
+\bibfield{author}{\bibinfo{person}{Jan~Karel Lenstra},
+  \bibinfo{person}{AHG~Rinnooy Kan}, {and} \bibinfo{person}{Peter Brucker}.}
+  \bibinfo{year}{1977}\natexlab{}.
+\newblock \showarticletitle{Complexity of machine scheduling problems}.
+\newblock \bibinfo{journal}{{\em Annals of discrete mathematics\/}}
+  \bibinfo{volume}{1} (\bibinfo{year}{1977}), \bibinfo{pages}{343--362}.
+\newblock
+
+
+\bibitem[\protect\citeauthoryear{Ullman}{Ullman}{1976}]%
+        {ullman1976complexity}
+\bibfield{author}{\bibinfo{person}{Jeffrey~D Ullman}.}
+  \bibinfo{year}{1976}\natexlab{}.
+\newblock \showarticletitle{Complexity of sequencing problems}.
+\newblock \bibinfo{journal}{{\em Computer and Job-Shop Scheduling Theory, EG Co
+  man, Jr.(ed.)\/}} (\bibinfo{year}{1976}).
 \newblock
 
 
