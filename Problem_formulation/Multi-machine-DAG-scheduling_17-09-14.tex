@@ -1,0 +1,155 @@
+\section{Assigning and Scheduling Job Tasks on Machines}
+
+\subsection{Model}
+Suppose that there is a set of jobs $\mathcal{J}$ where each job $J\in\mathcal{J}$ can be separated into a set of individual tasks $\mathcal{T}_J$.
+For a particular set tasks for a job $\mathcal{T}_J$, there is a directed acyclic graph (DAG) that represents the precedence constraints between the tasks.
+A precedence constraint $j\rightarrow k$ means that task $j$ must completely finish before task $k$ can start.
+An in-tree is a special type of DAG in which each task has at most one successor.
+
+Each task $i$ requires a total of $p_i$ units of processing time to be done.
+Let $c_i$ be the time at which task $i$ is completed.
+Therefore, the completion time for a particular job $J$ is the time at which its latest task completes $C_J=\max_{i\in\mathcal{T}_J}\{c_i\}$.
+
+There are $M$ parallel identical machines that can perform work on the job tasks.
+Each task can only be processed by one machine at a time and each machine can only process one task at a time.
+We assume that each task can be preempted an unlimited number of times by any machine.
+
+\subsection{Problem}
+
+The goal is to minimize the sum of the average completion time among all of the jobs:
+\begin{align}
+	\min \frac{1}{|\mathcal{J}|}\sum_{J\in\mathcal{J}} C_J \label{eq:gen_prob}
+\end{align}
+
+\subsubsection{Decisions}
+
+For each task $i$ and time $t$ we must decide the allocation $a_i(t)\in\{0,1\}$ for one or no machines to work on it.
+Let $\mathcal{A}$ be the schedule of all allocations for all tasks and times.
+
+\subsection{Shortest Remaining Processing Time}
+When deciding which job should have priority over another when scheduling, Shortest Remaining Processing Time (SRPT) is a common intuitive rule.
+However, when comparing different in-trees, the challenge becomes on how to decide which metric defines the ``processing time" of an in-tree.
+We explore three intuitive metrics and give examples to show their suboptimality.
+
+\subsubsection{Height}
+
+Let us define the height of a job as the minimum length of time it would take to complete with an infinite number of machines.
+In other words, this is the length of its critical path.
+The intuition behind giving priority to a job with a smaller height is that it leaves the system faster and minimally delays jobs with larger heights that are scheduled later.
+
+However using height as the ``processing time" metric in a SRPT rule to schedule a set of in-tree jobs gives an approximation ratio that approaches 2 as the number of machines goes to infinity.
+We use the following example to show this.
+Suppose we have a set of $M+1$ jobs where $M\geq 2$ and we separate these jobs into Type A and Type B jobs.
+There are $M$ Type A jobs in which each job is made up of one task with a processing time of $M+1$.
+There is one Type B job in which it has $M+1$ tasks; the first $M$ tasks each has a processing time of $M$, while the $(M+1)$-th task has a processing time of 0.
+Also, the $(M+1)$-th task has a precedence constraint from all other tasks within that job.
+
+SRPT with height as the processing time metric gives priority to the Type B job since the Type A jobs all have a height of $M+1$ while the Type B jobs all have a height of $M$.
+The Type B job is scheduled first and occupies the $M$ machines for $M$ units of time and completes at times $C_\text{B}=M$.
+After the Type B job completes, the Type A jobs each take a single machine and run for $M+1$ units of time giving completion times of $C_{\text{A}i}=2M+1$ for $i\in\{1,...,M\}$.
+This schedule results in the following average completion time:
+\begin{align}
+	\overline{C}_\text{SRPT-height} & = \dfrac{1}{M+1}\left(\sum_{i=1}^M C_{\text{A}i} + C_{\text{B}}\right) \nonumber \\
+	& = \dfrac{1}{M+1}\left(\sum_{i=1}^M (2M+1) + M\right) \nonumber \\
+	& = 2M 
+\end{align}
+
+On the other hand, the optimal schedule would first process all of the Type A jobs using all of the machines for $M+1$ units of time giving completion times of $C_{\text{A}i}=M+1$ for $i\in\{1,...,M\}$.
+After the Type A jobs complete then the Type B job is processed by all of the machines which gives the completion time $C_\text{B}=2M+1$.
+This schedule results in the following average completion time:
+\begin{align}
+	\overline{C}_\text{OPT} & =  \dfrac{1}{M+1}\left(\sum_{i=1}^M C_{\text{A}i} + C_{\text{B}}\right) \nonumber \\
+	& =  \dfrac{1}{M+1}\left(\sum_{i=1}^M (M+1) + (2M+1)\right) \nonumber \\
+	& =  \dfrac{M^2+3M+1}{M+1}
+\end{align}
+
+From this example we have a lower bound on the approximation ratio for SRPT with height as the processing time metric:
+\begin{align}
+	\dfrac{\overline{C}_\text{SRPT-height}}{\overline{C}_\text{OPT}} & \geq \dfrac{2M}{\dfrac{M^2+3M+1}{M+1}} \nonumber \\
+	& = \dfrac{2M^2+2M}{M^2+3M+1} = 2-\dfrac{4M+2}{M^2+3M+1}
+\end{align}
+
+As $M$ approaches infinity, the approximation ratio goes to 2.
+
+%However using height as the ``processing time" metric in a SRPT rule to schedule a set of in-tree jobs gives an approximation ratio $\Omega(\sqrt{M})$ for $M\geq 4$.
+%We use the following example to show this.
+%For simplicity, we assume that $\sqrt{M}$ is an integer.
+%Suppose we have a set of $M+\sqrt{M}$ jobs where $M\geq 4$ and we separate these jobs into Type A and Type B jobs.
+%There are $M$ Type A jobs in which each job is made up of one task with a processing time of $M+1$.
+%There are $\sqrt{M}$ Type B jobs in which each job has $M+1$ tasks; the first $M$ tasks each has a processing time of $M$, while the $(M+1)$-th task has a processing time of 0.
+%Also, the $(M+1)$-th task has a precedence constraint from all other tasks within that job.
+
+%SRPT with height as the processing time metric gives priority to Type B jobs since the Type A jobs all have a height of $M+1$ while the Type B jobs all have a height of $M$.
+%The Type B jobs are scheduled first and each job occupies the $M$ machines for $M$ units of time and completes at times $C_\text{Bi}=Mi$ for $i\in\{1,...,\sqrt{M}\}$.
+%Then after all the Type B jobs are completed, the Type A jobs each take a single machine and run for $M+1$ units of time giving completion times of $C_{\text{A}i}=M\sqrt{M}+M+1$ for $i\in\{1,...,M\}$.
+%This schedule results in the following average completion time:
+%\begin{align}
+%	\overline{C}_\text{SRPT-height} & = \dfrac{1}{M+\sqrt{M}}\left(\sum_{i=1}^M C_{\text{A}i} + \sum_{i=1}^{\sqrt{M}}C_{\text{B}i}\right) \nonumber \\
+%	& = \dfrac{1}{M+\sqrt{M}}\left(\sum_{i=1}^M (M\sqrt{M}+M+1) + \sum_{i=1}^{\sqrt{M}}Mi\right) \nonumber \\
+%	& = \dfrac{1}{M+\sqrt{M}}\left(M(M\sqrt{M}+M+1) + M\dfrac{\sqrt{M}(\sqrt{M}+1)}{2}\right) \nonumber \\
+%	& = \dfrac{\sqrt{M}}{2(\sqrt{M}+1)}\left(2M\sqrt{M}+3M+\sqrt{M}+2\right)
+%\end{align}
+
+%On the other hand, the optimal schedule would first process all of the Type A jobs using all of the machines for $M+1$ units of time giving completion times of $C_{\text{A}i}=M+1$ for $i\in\{1,...,M\}$.
+%After the Type A jobs complete then the Type B jobs are processed consecutively by all of the machines at once dedicated to a single job which gives the completion times $C_\text{Bi}=M+1+Mi$ for $i\in\{1,...,\sqrt{M}\}$.
+%This schedule results in the following average completion time:
+%\begin{align}
+%	\overline{C}_\text{OPT} & = \dfrac{1}{M+\sqrt{M}}\left(\sum_{i=1}^M C_{\text{A}i} + \sum_{i=1}^{\sqrt{M}}C_{\text{B}i}\right) \nonumber \\
+%	& = \dfrac{1}{M+\sqrt{M}}\left(\sum_{i=1}^M (M+1) + \sum_{i=1}^{\sqrt{M}}(M+1+Mi)\right) \nonumber \\
+%	& = \dfrac{1}{M+\sqrt{M}}\left(M\sqrt{M}(M+1) + M\dfrac{\sqrt{M}(\sqrt{M}+1)}{2}\right) \nonumber \\
+%	& = \dfrac{M}{2(\sqrt{M}+1)}\left(2M+ \sqrt{M}+3\right)
+%\end{align}
+
+%From this example we have a lower bound on the approximation ratio for SRPT with height as the processing time metric:
+%\begin{align}
+	%\dfrac{\overline{C}_\text{SRPT-height}}{\overline{C}_\text{OPT}} & \geq %\dfrac{\left(2M\sqrt{M}+3M+\sqrt{M}+2\right)}{\sqrt{M}\left(2M+ \sqrt{M}+3\right)} \nonumber \\
+	%& = \dfrac{2M\sqrt{M}+3M+\sqrt{M}+2}{2M\sqrt{M}+ M+3\sqrt{M}} = 1 + \dfrac{2M-\sqrt{M}+2}{2M\sqrt{M}+ M+3\sqrt{M}}
+%\end{align}
+
+%This is not what I wanted.
+
+\subsubsection{Width}
+
+Let us define the width of a job as the minimum number of machines a job needs so that it completes at the same time as it would with an infinite number of machines.
+This metric would define how much a job could be parallelized.
+The intuition behind giving priority to a job with a smaller width is that it uses less machines at any given time which would allow other jobs to run simultaneously.  Whereas a job with a larger width might block other jobs from being processed and increase all of their completion times.
+
+However using width as the ``processing time" metric in a SRPT rule to schedule a set of in-tree jobs gives an approximation ratio $\Omega(M)$ for $M\geq 2$.
+We use the following example to show this.
+Suppose we have a set of $M+1$ jobs where $M\geq 2$ and we separate these jobs into Type A and Type B jobs.
+There are $M$ Type A jobs in which each job has $M+1$ tasks; the first $M$ tasks each has a processing time of 1, while the $(M+1)$-th task has a processing time of 0.
+Also, the $(M+1)$-th task has a precedence constraint from all other tasks within that job.
+There is only one Type B job which has $M$ tasks; the first $M-1$ tasks each has a processing time of $M^2$, while the $M$-th task has a processing time of 0.
+Also, the $M$-th task has a precedence constraint from all other tasks within that job.
+
+SRPT with width as the processing time metric gives priority to the Type B job since the Type A jobs all have a width of $M$ while the Type B job has a width of $M-1$.
+The one Type B job is scheduled first and so it occupies $M-1$ machines for the first $M^2$ units of time and completes at time $C_\text{B}=M^2$.
+This leaves only one machine available to schedule all of the Type A jobs for the first $M^2$ units of time.
+Putting the Type A jobs in an arbitrary order and consecutively processing each of them until completion on the remaining one machine gives the following completion times $C_{\text{A}i}=Mi$ for $i\in\{1,...,M\}$.
+This schedule results in the following average completion time:
+\begin{align}
+	\overline{C}_\text{SRPT-width} & = \dfrac{1}{M+1}\left(\sum_{i=1}^M C_{\text{A}i} + C_\text{B}\right) \nonumber \\
+	& = \dfrac{1}{M+1}\left(\sum_{i=1}^M Mi + M^2\right) \nonumber \\
+	& = \dfrac{1}{M+1}\left(M\dfrac{M(M+1)}{2} + M^2\right) \nonumber \\
+	& = \dfrac{M^2(M+3)}{2(M+1)}
+\end{align}
+
+On the other hand, the optimal schedule would first consecutively process the Type A jobs using all $M$ machines giving the following completion times $C_{\text{A}i}=i$ for $i\in\{1,...,M\}$.
+Then the Type B job would be processed by $M-1$ machines for $M^2$ units of time giving the completion time $C_\text{B}=M+M^2$.
+This schedule results in the following average completion time:
+\begin{align}
+	\overline{C}_\text{OPT} & = \dfrac{1}{M+1}\left(\sum_{i=1}^M C_{\text{A}i} + C_\text{B}\right) \nonumber \\
+	& = \dfrac{1}{M+1}\left(\sum_{i=1}^M i + (M + M^2)\right) \nonumber \\
+	& = \dfrac{1}{M+1}\left(\dfrac{M(M+1)}{2} + (M + M^2)\right) \nonumber \\
+	& = \dfrac{3}{2}M
+\end{align}
+
+From this example we have a lower bound on the approximation ratio for SRPT with width as the processing time metric:
+\begin{align}
+	\dfrac{\overline{C}_\text{SRPT-width}}{\overline{C}_\text{OPT}} & \geq \dfrac{\dfrac{M^2(M+3)}{2(M+1)}}{\dfrac{3}{2}M} \nonumber \\
+	& = \dfrac{M(M+1)+2M}{3(M+1)} = \dfrac{1}{3}M + \dfrac{2}{3}\left(\dfrac{M}{M+1}\right)
+\end{align}
+
+This gives the approximation ratio to be $\Omega(M)$ for $M\geq 2$ to schedule in-trees.
+
+\subsubsection{Total Processing Time}
